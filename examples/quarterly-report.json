@@ -1,0 +1,133 @@
+{
+  "title": "Q2 2025 Financial Report",
+  "language": "en",
+  "styles": ".heading-1 { font-size: 24pt; font-weight: bold; }\n.heading-2 { font-size: 18pt; font-weight: bold; }\n.table { border-collapse: collapse; }\n.table-header { background-color: #f5f5f5; font-weight: bold; }",
+  "sections": [
+    {
+      "id": "sec-executive",
+      "title": "Executive Summary",
+      "content": [
+        {
+          "type": "heading",
+          "level": 1,
+          "text": "Executive Summary",
+          "id": "h-exec-summary"
+        },
+        {
+          "type": "paragraph",
+          "text": "Total revenue increased by 15% compared to Q1, driven by strong performance in the EMEA and APAC regions.",
+          "id": "p-001"
+        }
+      ]
+    },
+    {
+      "id": "sec-financial",
+      "title": "Financial Statements",
+      "content": [
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Revenue by Region",
+          "id": "h-revenue"
+        },
+        {
+          "type": "table",
+          "id": "tbl-revenue",
+          "caption": "Revenue by Region (Q1 vs Q2 2025)",
+          "columns": [
+            {
+              "id": "region",
+              "header": "Region",
+              "type": "text"
+            },
+            {
+              "id": "q1",
+              "header": "Q1 2025",
+              "type": "currency",
+              "currency": "EUR"
+            },
+            {
+              "id": "q2",
+              "header": "Q2 2025",
+              "type": "currency",
+              "currency": "EUR"
+            },
+            {
+              "id": "change",
+              "header": "Change",
+              "type": "percentage"
+            }
+          ],
+          "rows": [
+            {
+              "region": { "raw": "EMEA", "display": "EMEA" },
+              "q1": { "raw": 542000.00, "display": "€542,000" },
+              "q2": { "raw": 623000.00, "display": "€623,000" },
+              "change": { "raw": 0.149, "display": "+14.9%" }
+            },
+            {
+              "region": { "raw": "APAC", "display": "APAC" },
+              "q1": { "raw": 318000.00, "display": "€318,000" },
+              "q2": { "raw": 401000.00, "display": "€401,000" },
+              "change": { "raw": 0.261, "display": "+26.1%" }
+            }
+          ],
+          "footer": ["Total", "€860,000", "€1,024,000", "+19.1%"]
+        }
+      ]
+    },
+    {
+      "id": "sec-org",
+      "title": "Organization",
+      "content": [
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Executive Team",
+          "id": "h-org"
+        },
+        {
+          "type": "diagram",
+          "id": "diag-org",
+          "diagram_type": "hierarchical",
+          "title": "Executive Team Structure",
+          "nodes": [
+            {
+              "id": "ceo",
+              "label": "CEO\nJane Smith",
+              "shape": "box",
+              "style": "primary"
+            },
+            {
+              "id": "cfo",
+              "label": "CFO\nBob Lee",
+              "shape": "box"
+            },
+            {
+              "id": "cto",
+              "label": "CTO\nAlice Chen",
+              "shape": "box"
+            }
+          ],
+          "edges": [
+            {
+              "from": "ceo",
+              "to": "cfo",
+              "type": "solid"
+            },
+            {
+              "from": "ceo",
+              "to": "cto",
+              "type": "solid"
+            }
+          ],
+          "layout": {
+            "direction": "top-down",
+            "spacing": "normal"
+          }
+        }
+      ]
+    }
+  ]
+}
+

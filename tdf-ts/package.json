@@ -1,0 +1,35 @@
+{
+  "name": "tdf-ts",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for TDF (TrustDoc Financial) format",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "keywords": [
+    "tdf",
+    "trustdoc",
+    "document",
+    "financial"
+  ],
+  "author": "",
+  "license": "MIT OR Apache-2.0",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "jszip": "^3.10.0",
+    "cbor-web": "^8.1.0"
+  }
+}
+

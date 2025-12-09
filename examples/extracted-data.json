@@ -1,0 +1,129 @@
+{
+  "metadata": {
+    "created": "2025-12-07T22:58:11.497924015+00:00",
+    "id": "fe17a4ed-6f83-4ee8-bd60-c398f9bf6c64",
+    "modified": "2025-12-07T22:58:11.497924015+00:00",
+    "title": "Invoice #INV-2025-0427"
+  },
+  "tables": {
+    "tbl-items": {
+      "columns": [
+        {
+          "header": "Description",
+          "id": "description",
+          "type": "text"
+        },
+        {
+          "header": "Quantity",
+          "id": "quantity",
+          "type": "number"
+        },
+        {
+          "currency": "EUR",
+          "header": "Unit Price",
+          "id": "unit-price",
+          "type": "currency"
+        },
+        {
+          "currency": "EUR",
+          "header": "Total",
+          "id": "total",
+          "type": "currency"
+        }
+      ],
+      "rows": [
+        {
+          "description": {
+            "display": "Software License - Enterprise",
+            "raw": "Software License - Enterprise"
+          },
+          "quantity": {
+            "display": "10",
+            "raw": 10.0
+          },
+          "total": {
+            "display": "€25,000.00",
+            "raw": 25000.0
+          },
+          "unit-price": {
+            "display": "€2,500.00",
+            "raw": 2500.0
+          }
+        },
+        {
+          "description": {
+            "display": "Implementation Services",
+            "raw": "Implementation Services"
+          },
+          "quantity": {
+            "display": "40",
+            "raw": 40.0
+          },
+          "total": {
+            "display": "€6,000.00",
+            "raw": 6000.0
+          },
+          "unit-price": {
+            "display": "€150.00",
+            "raw": 150.0
+          }
+        },
+        {
+          "description": {
+            "display": "Training Sessions",
+            "raw": "Training Sessions"
+          },
+          "quantity": {
+            "display": "8",
+            "raw": 8.0
+          },
+          "total": {
+            "display": "€4,000.00",
+            "raw": 4000.0
+          },
+          "unit-price": {
+            "display": "€500.00",
+            "raw": 500.0
+          }
+        }
+      ]
+    },
+    "tbl-totals": {
+      "columns": [
+        {
+          "header": "",
+          "id": "label",
+          "type": "text"
+        },
+        {
+          "currency": "EUR",
+          "header": "Amount (EUR)",
+          "id": "amount",
+          "type": "currency"
+        }
+      ],
+      "rows": [
+        {
+          "amount": {
+            "display": "€35,000.00",
+            "raw": 35000.0
+          },
+          "label": {
+            "display": "Subtotal",
+            "raw": "Subtotal"
+          }
+        },
+        {
+          "amount": {
+            "display": "€7,000.00",
+            "raw": 7000.0
+          },
+          "label": {
+            "display": "VAT (20%)",
+            "raw": "VAT (20%)"
+          }
+        }
+      ]
+    }
+  }
+}

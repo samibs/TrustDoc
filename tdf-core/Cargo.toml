@@ -1,0 +1,37 @@
+[package]
+name = "tdf-core"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Core library for TDF (TrustDoc Financial) format"
+repository = "https://github.com/trustdoc/tdf"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+serde_cbor.workspace = true
+sha2.workspace = true
+blake3.workspace = true
+ed25519-dalek.workspace = true
+k256.workspace = true
+# zip with deflate only (no bzip2 which requires C stdlib)
+zip = { version = "0.6", default-features = false, features = ["deflate"] }
+thiserror.workspace = true
+chrono.workspace = true
+uuid.workspace = true
+base64 = "0.21"
+hex = "0.4"
+reqwest = { version = "0.11", features = ["rustls-tls"], optional = true }
+async-trait.workspace = true
+
+[features]
+default = []
+rfc3161 = ["reqwest"]
+
+[dev-dependencies]
+hex = "0.4"
+tempfile = "3.8"
+rand = "0.8"
+rayon = "1.8"
+

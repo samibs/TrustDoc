@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TDF Desktop Viewer</title>
+    <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔐 TDF Desktop Viewer</h1>
+            <p>TrustDoc Financial Document Viewer</p>
+        </header>
+
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-prompt">
+                <p>📄 Drag and drop a .tdf file here, or</p>
+                <button id="browseBtn">Browse Files</button>
+                <p class="hint">Or use File → Open from the menu</p>
+            </div>
+        </div>
+
+        <div class="document-view" id="documentView" style="display: none;">
+            <div class="toolbar">
+                <button id="verifyBtn" title="Verify document integrity and signatures">
+                    🔍 Verify
+                </button>
+                <button id="extractBtn" title="Extract structured data">
+                    📊 Extract Data
+                </button>
+                <button id="printBtn" title="Print document">
+                    🖨️ Print
+                </button>
+                <button id="openBtn" title="Open another document">
+                    📂 Open
+                </button>
+            </div>
+
+            <div class="status" id="status"></div>
+            <div class="verification-panel" id="verificationPanel" style="display: none;"></div>
+
+            <div class="content" id="content"></div>
+        </div>
+    </div>
+
+    <script type="module" src="src/main.ts"></script>
+</body>
+</html>
+

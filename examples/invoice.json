@@ -1,0 +1,136 @@
+{
+  "title": "Invoice #INV-2025-0427",
+  "language": "en",
+  "styles": ".invoice-header { border-bottom: 2px solid #1a237e; padding-bottom: 1rem; margin-bottom: 2rem; }\n.invoice-meta { display: flex; justify-content: space-between; margin-bottom: 2rem; }\n.table { border-collapse: collapse; width: 100%; }\n.table-header { background-color: #f5f5f5; font-weight: bold; }\n.table-cell { padding: 8px; border: 1px solid #ddd; }\n.total-row { font-weight: bold; background-color: #e3f2fd; }",
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Invoice",
+      "content": [
+        {
+          "type": "heading",
+          "level": 1,
+          "text": "INVOICE",
+          "id": "h-invoice"
+        },
+        {
+          "type": "paragraph",
+          "text": "Invoice #: INV-2025-0427\nDate: March 15, 2025\nDue Date: April 15, 2025",
+          "id": "p-invoice-meta"
+        }
+      ]
+    },
+    {
+      "id": "sec-parties",
+      "title": "Parties",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "From:\nAcme Corporation\n123 Business Street\nParis, 75001, France\nVAT: FR12345678901",
+          "id": "p-from"
+        },
+        {
+          "type": "paragraph",
+          "text": "To:\nGlobal Tech Solutions Ltd.\n456 Innovation Avenue\nLondon, SW1A 1AA, United Kingdom\nVAT: GB98765432109",
+          "id": "p-to"
+        }
+      ]
+    },
+    {
+      "id": "sec-items",
+      "title": "Items",
+      "content": [
+        {
+          "type": "table",
+          "id": "tbl-items",
+          "caption": "Invoice Items",
+          "columns": [
+            {
+              "id": "description",
+              "header": "Description",
+              "type": "text"
+            },
+            {
+              "id": "quantity",
+              "header": "Quantity",
+              "type": "number"
+            },
+            {
+              "id": "unit-price",
+              "header": "Unit Price",
+              "type": "currency",
+              "currency": "EUR"
+            },
+            {
+              "id": "total",
+              "header": "Total",
+              "type": "currency",
+              "currency": "EUR"
+            }
+          ],
+          "rows": [
+            {
+              "description": { "raw": "Software License - Enterprise", "display": "Software License - Enterprise" },
+              "quantity": { "raw": 10, "display": "10" },
+              "unit-price": { "raw": 2500.00, "display": "€2,500.00", "currency": "EUR" },
+              "total": { "raw": 25000.00, "display": "€25,000.00", "currency": "EUR" }
+            },
+            {
+              "description": { "raw": "Implementation Services", "display": "Implementation Services" },
+              "quantity": { "raw": 40, "display": "40" },
+              "unit-price": { "raw": 150.00, "display": "€150.00", "currency": "EUR" },
+              "total": { "raw": 6000.00, "display": "€6,000.00", "currency": "EUR" }
+            },
+            {
+              "description": { "raw": "Training Sessions", "display": "Training Sessions" },
+              "quantity": { "raw": 8, "display": "8" },
+              "unit-price": { "raw": 500.00, "display": "€500.00", "currency": "EUR" },
+              "total": { "raw": 4000.00, "display": "€4,000.00", "currency": "EUR" }
+            }
+          ],
+          "footer": ["Subtotal", "", "", "€35,000.00"]
+        }
+      ]
+    },
+    {
+      "id": "sec-totals",
+      "title": "Totals",
+      "content": [
+        {
+          "type": "table",
+          "id": "tbl-totals",
+          "columns": [
+            {
+              "id": "label",
+              "header": "",
+              "type": "text"
+            },
+            {
+              "id": "amount",
+              "header": "Amount (EUR)",
+              "type": "currency",
+              "currency": "EUR"
+            }
+          ],
+          "rows": [
+            {
+              "label": { "raw": "Subtotal", "display": "Subtotal" },
+              "amount": { "raw": 35000.00, "display": "€35,000.00", "currency": "EUR" }
+            },
+            {
+              "label": { "raw": "VAT (20%)", "display": "VAT (20%)" },
+              "amount": { "raw": 7000.00, "display": "€7,000.00", "currency": "EUR" }
+            }
+          ],
+          "footer": ["Total Due", "€42,000.00"]
+        },
+        {
+          "type": "paragraph",
+          "text": "Payment Terms: Net 30 days\nPayment Method: Bank Transfer\nAccount: FR76 1234 5678 9012 3456 7890 123",
+          "id": "p-payment-terms"
+        }
+      ]
+    }
+  ]
+}
+

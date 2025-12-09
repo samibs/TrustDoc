@@ -1,0 +1,27 @@
+{
+  "id": "9577797b-3ac4-4079-bbe0-7f889ae567ea",
+  "document_id": "fe17a4ed-6f83-4ee8-bd60-c398f9bf6c64",
+  "order": "Unordered",
+  "required_signers": [
+    {
+      "signer_id": "did:web:acme.com",
+      "signer_name": "did:web:acme.com",
+      "role": null,
+      "required": true
+    },
+    {
+      "signer_id": "did:web:client.com",
+      "signer_name": "did:web:client.com",
+      "role": null,
+      "required": true
+    }
+  ],
+  "status": {
+    "InProgress": {
+      "signed_count": 0,
+      "total": 2
+    }
+  },
+  "created": "2025-12-07T22:58:14.094497531Z",
+  "completed": null
+}

@@ -1,0 +1,37 @@
+[package]
+name = "tdf-wasm"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "WASM bindings for TDF core library"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+tdf-core = { path = "../tdf-core" }
+wasm-bindgen.workspace = true
+serde = { version = "1.0", features = ["derive"] }
+serde-wasm-bindgen.workspace = true
+serde_cbor = "0.11"
+js-sys.workspace = true
+web-sys.workspace = true
+hex = "0.4"
+# getrandom 0.2 for older deps (ed25519-dalek, etc.) - needs js feature for WASM
+getrandom = { version = "0.2", features = ["js"] }
+# getrandom 0.3 for uuid - wasm_js feature enables Web Crypto API
+getrandom03 = { version = "0.3", features = ["wasm_js"], package = "getrandom" }
+# Override zip to disable bzip2 (requires C stdlib which WASM doesn't have)
+zip = { version = "0.6", default-features = false, features = ["deflate"] }
+# Override flate2 to use rust backend (no C code)
+flate2 = { version = "1.0", default-features = false, features = ["rust_backend"] }
+# Disable zstd in blake3 (requires C stdlib)
+blake3 = { version = "1.5", default-features = false }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3"
+
+[profile.release]
+opt-level = "z"
+lto = true

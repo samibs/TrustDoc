@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "created": "2025-12-07T22:35:23.939481941+00:00",
+    "id": "0f2abf30-23b2-455c-a936-b004063ffc60",
+    "modified": "2025-12-07T22:35:23.939481941+00:00",
+    "title": "Q2 2025 Financial Report"
+  },
+  "tables": {
+    "tbl-revenue": {
+      "columns": [
+        {
+          "header": "Region",
+          "id": "region",
+          "type": "text"
+        },
+        {
+          "currency": "EUR",
+          "header": "Q1 2025",
+          "id": "q1",
+          "type": "currency"
+        },
+        {
+          "currency": "EUR",
+          "header": "Q2 2025",
+          "id": "q2",
+          "type": "currency"
+        },
+        {
+          "header": "Change",
+          "id": "change",
+          "type": "percentage"
+        }
+      ],
+      "rows": [
+        {
+          "change": {
+            "display": "+14.9%",
+            "raw": 0.149
+          },
+          "q1": {
+            "display": "€542,000",
+            "raw": 542000.0
+          },
+          "q2": {
+            "display": "€623,000",
+            "raw": 623000.0
+          },
+          "region": {
+            "display": "EMEA",
+            "raw": "EMEA"
+          }
+        },
+        {
+          "change": {
+            "display": "+26.1%",
+            "raw": 0.261
+          },
+          "q1": {
+            "display": "€318,000",
+            "raw": 318000.0
+          },
+          "q2": {
+            "display": "€401,000",
+            "raw": 401000.0
+          },
+          "region": {
+            "display": "APAC",
+            "raw": "APAC"
+          }
+        }
+      ]
+    }
+  }
+}

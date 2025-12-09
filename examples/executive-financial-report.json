@@ -1,0 +1,322 @@
+{
+  "title": "Q4 2024 Financial Executive Report",
+  "language": "en",
+  "sections": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Q4 2024 Financial Executive Report",
+      "id": "title"
+    },
+    {
+      "type": "paragraph",
+      "text": "This document demonstrates the TrustDoc Financial (TDF) format's enterprise-grade security features, designed for sensitive financial communications and regulatory compliance.",
+      "id": "intro"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "\ud83d\udd12 Security Features",
+      "id": "security"
+    },
+    {
+      "type": "table",
+      "id": "security-features",
+      "caption": "Enterprise Security Capabilities",
+      "columns": [
+        {
+          "id": "feature",
+          "header": "Security Feature",
+          "width": "40%"
+        },
+        {
+          "id": "description",
+          "header": "Description",
+          "width": "60%"
+        }
+      ],
+      "rows": [
+        {
+          "cells": [
+            "\ud83d\udd10 Cryptographic Integrity",
+            "Merkle tree-based tamper detection ensures any modification is immediately detectable"
+          ]
+        },
+        {
+          "cells": [
+            "\u270d\ufe0f Digital Signatures",
+            "Ed25519 and secp256k1 (Web3) signatures provide non-repudiation and authenticity"
+          ]
+        },
+        {
+          "cells": [
+            "\u23f0 Timestamp Authority",
+            "RFC 3161 timestamping provides legally binding proof of document existence"
+          ]
+        },
+        {
+          "cells": [
+            "\ud83d\udc65 Multi-Party Workflows",
+            "Ordered, simultaneous, or unordered signing workflows for complex approvals"
+          ]
+        },
+        {
+          "cells": [
+            "\ud83c\udf10 Web3 Ready",
+            "Built-in support for decentralized identifiers (DIDs) and blockchain integration"
+          ]
+        },
+        {
+          "cells": [
+            "\ud83d\udcc4 Print Deterministic",
+            "Fixed layout ensures consistent rendering across all platforms"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "\ud83d\udcca Financial Highlights",
+      "id": "highlights"
+    },
+    {
+      "type": "table",
+      "id": "financial-metrics",
+      "caption": "Q4 2024 Key Performance Indicators",
+      "columns": [
+        {
+          "id": "metric",
+          "header": "Metric",
+          "width": "30%"
+        },
+        {
+          "id": "q3",
+          "header": "Q3 2024",
+          "width": "20%"
+        },
+        {
+          "id": "q4",
+          "header": "Q4 2024",
+          "width": "20%"
+        },
+        {
+          "id": "change",
+          "header": "Change",
+          "width": "30%"
+        }
+      ],
+      "rows": [
+        {
+          "cells": [
+            "Total Revenue",
+            "$125.4M",
+            "$142.8M",
+            "+13.9% \u2197"
+          ]
+        },
+        {
+          "cells": [
+            "Net Profit Margin",
+            "18.2%",
+            "21.5%",
+            "+3.3pp \u2197"
+          ]
+        },
+        {
+          "cells": [
+            "Operating Cash Flow",
+            "$89.2M",
+            "$108.6M",
+            "+21.7% \u2197"
+          ]
+        },
+        {
+          "cells": [
+            "EBITDA",
+            "$45.3M",
+            "$52.1M",
+            "+15.0% \u2197"
+          ]
+        },
+        {
+          "cells": [
+            "Customer Acquisition Cost",
+            "$1,240",
+            "$1,180",
+            "-4.8% \u2198"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "\ud83d\udcc8 Revenue Breakdown",
+      "id": "revenue"
+    },
+    {
+      "type": "table",
+      "id": "revenue-breakdown",
+      "caption": "Revenue by Business Unit (Q4 2024)",
+      "columns": [
+        {
+          "id": "unit",
+          "header": "Business Unit",
+          "width": "40%"
+        },
+        {
+          "id": "revenue",
+          "header": "Revenue",
+          "width": "30%"
+        },
+        {
+          "id": "percentage",
+          "header": "Share",
+          "width": "30%"
+        }
+      ],
+      "rows": [
+        {
+          "cells": [
+            "Enterprise Solutions",
+            "$68.4M",
+            "47.9%"
+          ]
+        },
+        {
+          "cells": [
+            "Cloud Services",
+            "$42.1M",
+            "29.5%"
+          ]
+        },
+        {
+          "cells": [
+            "Professional Services",
+            "$24.8M",
+            "17.4%"
+          ]
+        },
+        {
+          "cells": [
+            "Licensing & Support",
+            "$7.5M",
+            "5.2%"
+          ]
+        }
+      ],
+      "footer": [
+        "Total",
+        "$142.8M",
+        "100.0%"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "\ud83c\udfaf Strategic Initiatives",
+      "id": "initiatives"
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        "Expanded enterprise security partnerships with 3 Fortune 500 companies",
+        "Launched new compliance automation platform achieving SOC 2 Type II certification",
+        "Increased R&D investment by 25% focusing on AI-powered financial analytics",
+        "Completed acquisition of SecureDoc Technologies, expanding market presence",
+        "Achieved ISO 27001 certification across all global operations"
+      ],
+      "id": "initiatives-list"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "\ud83d\udd10 Document Security Status",
+      "id": "doc-security"
+    },
+    {
+      "type": "paragraph",
+      "text": "This document is protected by TrustDoc Financial's cryptographic security layer. The integrity hash ensures that any tampering will be immediately detected. Digital signatures provide legal authenticity and non-repudiation.",
+      "id": "security-desc"
+    },
+    {
+      "type": "table",
+      "id": "security-status",
+      "caption": "Current Security Status",
+      "columns": [
+        {
+          "id": "check",
+          "header": "Security Check",
+          "width": "50%"
+        },
+        {
+          "id": "status",
+          "header": "Status",
+          "width": "50%"
+        }
+      ],
+      "rows": [
+        {
+          "cells": [
+            "Merkle Tree Integrity",
+            "\u2705 Verified"
+          ]
+        },
+        {
+          "cells": [
+            "Digital Signatures",
+            "\u2705 Valid"
+          ]
+        },
+        {
+          "cells": [
+            "Timestamp Authority",
+            "\u2705 Certified"
+          ]
+        },
+        {
+          "cells": [
+            "Tamper Detection",
+            "\u2705 Active"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "\ud83d\udccb Compliance & Audit Trail",
+      "id": "compliance"
+    },
+    {
+      "type": "paragraph",
+      "text": "This document format meets regulatory requirements for financial reporting including SOX, GDPR, and ISO 27001 standards. All modifications are cryptographically logged and verifiable.",
+      "id": "compliance-desc"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "\ud83d\udcde Next Steps",
+      "id": "next-steps"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        "Review financial metrics and strategic initiatives",
+        "Approve Q1 2025 budget allocation",
+        "Schedule board meeting for strategic planning session",
+        "Distribute report to stakeholders via secure TDF format"
+      ],
+      "id": "next-steps-list"
+    },
+    {
+      "type": "paragraph",
+      "text": "For questions or additional information, please contact the Finance Department.",
+      "id": "contact"
+    }
+  ],
+  "styles": "/* Corporate Financial Report - Professional Business Design */\n/* Sober, efficient, and color-controlled styling for executive documents */\n\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\n:root {\n  /* Corporate color palette - conservative and professional */\n  --corp-primary: #1a1a1a;\n  --corp-secondary: #2c3e50;\n  --corp-accent: #34495e;\n  --corp-border: #d0d0d0;\n  --corp-bg-primary: #ffffff;\n  --corp-bg-secondary: #f8f9fa;\n  --corp-bg-accent: #f0f2f5;\n  --corp-text-primary: #1a1a1a;\n  --corp-text-secondary: #4a4a4a;\n  --corp-text-muted: #6c6c6c;\n  --corp-success: #2d5016;\n  --corp-warning: #8b6914;\n  --corp-danger: #8b1a1a;\n  --corp-link: #1a4d7a;\n  --corp-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);\n  --corp-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);\n}\n\nbody {\n  font-family: 'Georgia', 'Times New Roman', serif;\n  line-height: 1.6;\n  color: var(--corp-text-primary);\n  background: #f5f5f5;\n  margin: 0;\n  padding: 0;\n  font-size: 11pt;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\n.document-container,\n#content > div:first-child {\n  max-width: 8.5in;\n  margin: 0 auto;\n  background: var(--corp-bg-primary);\n  box-shadow: var(--corp-shadow);\n  overflow: hidden;\n}\n\n/* Corporate Header - Clean and Minimal */\n.document-header {\n  background: var(--corp-bg-primary);\n  color: var(--corp-text-primary);\n  padding: 60px 80px 40px 80px;\n  border-bottom: 3px solid var(--corp-primary);\n  text-align: left;\n}\n\n.document-title {\n  font-size: 24pt;\n  font-weight: 700;\n  margin: 0 0 8px 0;\n  color: var(--corp-primary);\n  letter-spacing: -0.5px;\n  line-height: 1.2;\n  font-family: 'Arial', 'Helvetica', sans-serif;\n}\n\n.document-subtitle {\n  font-size: 10pt;\n  color: var(--corp-text-secondary);\n  font-weight: 400;\n  margin: 0;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n}\n\n.security-badge {\n  display: inline-block;\n  background: var(--corp-bg-secondary);\n  padding: 6px 12px;\n  border-radius: 2px;\n  margin-top: 16px;\n  font-size: 9pt;\n  font-weight: 500;\n  border: 1px solid var(--corp-border);\n  color: var(--corp-text-secondary);\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n}\n\n/* Content Area */\n.document-content {\n  padding: 40px 80px 60px 80px;\n  background: var(--corp-bg-primary);\n}\n\n/* Typography - Corporate Standard */\nh1 {\n  font-size: 18pt;\n  color: var(--corp-primary);\n  margin: 32px 0 16px 0;\n  font-weight: 700;\n  border-bottom: 2px solid var(--corp-primary);\n  padding-bottom: 8px;\n  font-family: 'Arial', 'Helvetica', sans-serif;\n  page-break-after: avoid;\n}\n\nh1::after {\n  display: none;\n}\n\nh2 {\n  font-size: 14pt;\n  color: var(--corp-secondary);\n  margin: 28px 0 12px 0;\n  font-weight: 600;\n  font-family: 'Arial', 'Helvetica', sans-serif;\n  page-break-after: avoid;\n}\n\nh2::before {\n  display: none;\n}\n\nh3 {\n  font-size: 12pt;\n  color: var(--corp-text-primary);\n  margin: 20px 0 10px 0;\n  font-weight: 600;\n  font-family: 'Arial', 'Helvetica', sans-serif;\n}\n\np {\n  margin: 12px 0;\n  color: var(--corp-text-primary);\n  font-size: 11pt;\n  line-height: 1.7;\n  font-weight: 400;\n  text-align: justify;\n}\n\n/* Corporate Tables - Clean and Functional */\ntable {\n  width: 100%;\n  border-collapse: collapse;\n  margin: 20px 0;\n  background: white;\n  border: 1px solid var(--corp-border);\n  page-break-inside: avoid;\n}\n\ntable caption {\n  font-weight: 600;\n  font-size: 11pt;\n  color: var(--corp-primary);\n  padding: 12px 16px;\n  background: var(--corp-bg-secondary);\n  text-align: left;\n  border-bottom: 1px solid var(--corp-border);\n  font-family: 'Arial', 'Helvetica', sans-serif;\n}\n\ntable thead {\n  background: var(--corp-bg-secondary);\n  border-bottom: 2px solid var(--corp-primary);\n}\n\ntable th {\n  padding: 10px 16px;\n  text-align: left;\n  font-weight: 600;\n  font-size: 10pt;\n  color: var(--corp-primary);\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n  font-family: 'Arial', 'Helvetica', sans-serif;\n  border-bottom: 2px solid var(--corp-primary);\n}\n\ntable td {\n  padding: 10px 16px;\n  border-bottom: 1px solid var(--corp-border);\n  color: var(--corp-text-primary);\n  font-size: 11pt;\n  vertical-align: top;\n}\n\ntable tbody tr {\n  background: white;\n}\n\ntable tbody tr:hover {\n  background: var(--corp-bg-accent);\n}\n\ntable tbody tr:nth-child(even) {\n  background: var(--corp-bg-secondary);\n}\n\ntable tbody tr:nth-child(even):hover {\n  background: var(--corp-bg-accent);\n}\n\ntable tfoot {\n  background: var(--corp-bg-secondary);\n  border-top: 2px solid var(--corp-primary);\n  font-weight: 600;\n}\n\ntable tfoot td {\n  border-top: 2px solid var(--corp-primary);\n  color: var(--corp-primary);\n  font-size: 11pt;\n  padding: 10px 16px;\n}\n\n/* Status Indicators - Subtle and Professional */\n.status-verified,\n.status-valid,\n.status-certified,\n.status-active {\n  color: var(--corp-success);\n  font-weight: 600;\n  font-size: 10pt;\n}\n\n.status-verified::before,\n.status-valid::before,\n.status-certified::before,\n.status-active::before {\n  content: '\u2713';\n  margin-right: 4px;\n  color: var(--corp-success);\n}\n\n.positive-change {\n  color: var(--corp-success);\n  font-weight: 600;\n}\n\n.positive-change::before {\n  content: '+';\n  margin-right: 2px;\n}\n\n.negative-change {\n  color: var(--corp-danger);\n  font-weight: 600;\n}\n\n.negative-change::before {\n  content: '-';\n  margin-right: 2px;\n}\n\n/* Lists - Clean and Structured */\nul, ol {\n  margin: 16px 0;\n  padding-left: 32px;\n}\n\nli {\n  margin: 8px 0;\n  color: var(--corp-text-primary);\n  line-height: 1.7;\n  font-size: 11pt;\n}\n\nul li::marker {\n  color: var(--corp-text-secondary);\n}\n\nol li::marker {\n  color: var(--corp-text-secondary);\n  font-weight: 600;\n}\n\n/* Security Section - Professional Highlight */\n.security-section {\n  background: var(--corp-bg-secondary);\n  border-left: 4px solid var(--corp-primary);\n  padding: 20px 24px;\n  margin: 24px 0;\n  border-radius: 0;\n  border-right: 1px solid var(--corp-border);\n  border-top: 1px solid var(--corp-border);\n  border-bottom: 1px solid var(--corp-border);\n}\n\n.security-section::before {\n  display: none;\n}\n\n.security-section h2 {\n  margin-top: 0;\n  color: var(--corp-primary);\n  border: none;\n  padding-bottom: 0;\n}\n\n/* Metadata - Subtle Display */\n.document-meta {\n  background: var(--corp-bg-secondary);\n  padding: 16px 20px;\n  border-radius: 0;\n  margin-bottom: 24px;\n  border: 1px solid var(--corp-border);\n  font-size: 9pt;\n  color: var(--corp-text-muted);\n  font-family: 'Courier New', monospace;\n}\n\n.document-meta p {\n  margin: 4px 0;\n  font-size: 9pt;\n  text-align: left;\n}\n\n.document-meta code {\n  background: white;\n  padding: 2px 6px;\n  border: 1px solid var(--corp-border);\n  border-radius: 2px;\n  font-size: 8pt;\n}\n\n.document-authors {\n  margin-bottom: 24px;\n  padding: 12px 16px;\n  background: var(--corp-bg-secondary);\n  border: 1px solid var(--corp-border);\n  font-size: 10pt;\n  color: var(--corp-text-secondary);\n}\n\n/* Footer - Minimal and Professional */\n.document-footer {\n  background: var(--corp-bg-secondary);\n  padding: 24px 80px;\n  text-align: center;\n  color: var(--corp-text-muted);\n  font-size: 9pt;\n  border-top: 1px solid var(--corp-border);\n}\n\n.security-note {\n  margin-top: 16px;\n  padding: 12px 16px;\n  background: var(--corp-bg-accent);\n  border: 1px solid var(--corp-border);\n  border-radius: 0;\n  color: var(--corp-text-secondary);\n  font-weight: 500;\n  font-size: 9pt;\n  text-align: left;\n}\n\n/* Document Sections */\n.document-section {\n  margin-bottom: 32px;\n  page-break-inside: avoid;\n}\n\n/* Print Styles - Corporate Standard */\n@media print {\n  body {\n    background: white;\n    padding: 0;\n    font-size: 10pt;\n  }\n  \n  .document-container {\n    box-shadow: none;\n    border-radius: 0;\n    max-width: 100%;\n  }\n  \n  .document-header {\n    background: white;\n    -webkit-print-color-adjust: exact;\n    print-color-adjust: exact;\n    page-break-after: avoid;\n    padding: 40px 60px 30px 60px;\n  }\n  \n  .document-content {\n    padding: 30px 60px 40px 60px;\n  }\n  \n  table {\n    page-break-inside: avoid;\n    border: 1px solid #000;\n  }\n  \n  table th {\n    background: #f0f0f0 !important;\n    -webkit-print-color-adjust: exact;\n    print-color-adjust: exact;\n  }\n  \n  h1, h2 {\n    page-break-after: avoid;\n  }\n  \n  .security-badge,\n  .document-footer {\n    -webkit-print-color-adjust: exact;\n    print-color-adjust: exact;\n  }\n}\n\n/* Responsive - Maintain Corporate Aesthetic */\n@media (max-width: 768px) {\n  .document-header {\n    padding: 40px 40px 30px 40px;\n  }\n  \n  .document-title {\n    font-size: 20pt;\n  }\n  \n  .document-content {\n    padding: 30px 40px 40px 40px;\n  }\n  \n  table {\n    font-size: 10pt;\n  }\n  \n  table th,\n  table td {\n    padding: 8px 12px;\n  }\n}\n\n/* Remove all animations and decorative elements */\n* {\n  animation: none !important;\n  transition: background-color 0.1s ease, color 0.1s ease;\n}\n\n/* Ensure consistent corporate styling */\n.document-title:first-child {\n  display: block;\n  background: var(--corp-bg-primary);\n  color: var(--corp-primary);\n  padding: 60px 80px 40px 80px;\n  text-align: left;\n  position: relative;\n  overflow: visible;\n  margin: 0;\n  border: none;\n  border-bottom: 3px solid var(--corp-primary);\n  border-radius: 0;\n  font-size: 24pt;\n  font-weight: 700;\n  text-shadow: none;\n  font-family: 'Arial', 'Helvetica', sans-serif;\n}\n"
+}

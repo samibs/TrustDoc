@@ -1,0 +1,21 @@
+{
+  "name": "tdf-viewer",
+  "version": "0.1.0",
+  "description": "Web viewer for TDF (TrustDoc Financial) documents",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "cbor-web": "^8.1.0",
+    "jszip": "^3.10.0",
+    "tdf-ts": "file:../tdf-ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.25",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0"
+  }
+}

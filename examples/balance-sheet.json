@@ -1,0 +1,190 @@
+{
+  "title": "Balance Sheet - Q2 2025",
+  "language": "en",
+  "styles": ".table { border-collapse: collapse; width: 100%; }\n.table-header { background-color: #f5f5f5; font-weight: bold; }\n.table-cell { padding: 8px; border: 1px solid #ddd; }\n.currency-positive { color: #2e7d32; }\n.currency-negative { color: #c62828; }",
+  "sections": [
+    {
+      "id": "sec-assets",
+      "title": "Assets",
+      "content": [
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Current Assets",
+          "id": "h-current-assets"
+        },
+        {
+          "type": "table",
+          "id": "tbl-current-assets",
+          "caption": "Current Assets as of June 30, 2025",
+          "columns": [
+            {
+              "id": "item",
+              "header": "Item",
+              "type": "text"
+            },
+            {
+              "id": "amount",
+              "header": "Amount (EUR)",
+              "type": "currency",
+              "currency": "EUR"
+            }
+          ],
+          "rows": [
+            {
+              "item": { "raw": "Cash and Cash Equivalents", "display": "Cash and Cash Equivalents" },
+              "amount": { "raw": 2450000.00, "display": "€2,450,000", "currency": "EUR" }
+            },
+            {
+              "item": { "raw": "Accounts Receivable", "display": "Accounts Receivable" },
+              "amount": { "raw": 1820000.00, "display": "€1,820,000", "currency": "EUR" }
+            },
+            {
+              "item": { "raw": "Inventory", "display": "Inventory" },
+              "amount": { "raw": 950000.00, "display": "€950,000", "currency": "EUR" }
+            },
+            {
+              "item": { "raw": "Prepaid Expenses", "display": "Prepaid Expenses" },
+              "amount": { "raw": 125000.00, "display": "€125,000", "currency": "EUR" }
+            }
+          ],
+          "footer": ["Total Current Assets", "€5,345,000"]
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Non-Current Assets",
+          "id": "h-non-current-assets"
+        },
+        {
+          "type": "table",
+          "id": "tbl-non-current-assets",
+          "caption": "Non-Current Assets",
+          "columns": [
+            {
+              "id": "item",
+              "header": "Item",
+              "type": "text"
+            },
+            {
+              "id": "amount",
+              "header": "Amount (EUR)",
+              "type": "currency",
+              "currency": "EUR"
+            }
+          ],
+          "rows": [
+            {
+              "item": { "raw": "Property, Plant & Equipment", "display": "Property, Plant & Equipment" },
+              "amount": { "raw": 8200000.00, "display": "€8,200,000", "currency": "EUR" }
+            },
+            {
+              "item": { "raw": "Intangible Assets", "display": "Intangible Assets" },
+              "amount": { "raw": 1500000.00, "display": "€1,500,000", "currency": "EUR" }
+            },
+            {
+              "item": { "raw": "Long-term Investments", "display": "Long-term Investments" },
+              "amount": { "raw": 3200000.00, "display": "€3,200,000", "currency": "EUR" }
+            }
+          ],
+          "footer": ["Total Non-Current Assets", "€12,900,000"]
+        }
+      ]
+    },
+    {
+      "id": "sec-liabilities",
+      "title": "Liabilities and Equity",
+      "content": [
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Current Liabilities",
+          "id": "h-current-liabilities"
+        },
+        {
+          "type": "table",
+          "id": "tbl-current-liabilities",
+          "columns": [
+            {
+              "id": "item",
+              "header": "Item",
+              "type": "text"
+            },
+            {
+              "id": "amount",
+              "header": "Amount (EUR)",
+              "type": "currency",
+              "currency": "EUR"
+            }
+          ],
+          "rows": [
+            {
+              "item": { "raw": "Accounts Payable", "display": "Accounts Payable" },
+              "amount": { "raw": 1250000.00, "display": "€1,250,000", "currency": "EUR" }
+            },
+            {
+              "item": { "raw": "Short-term Debt", "display": "Short-term Debt" },
+              "amount": { "raw": 800000.00, "display": "€800,000", "currency": "EUR" }
+            },
+            {
+              "item": { "raw": "Accrued Expenses", "display": "Accrued Expenses" },
+              "amount": { "raw": 450000.00, "display": "€450,000", "currency": "EUR" }
+            }
+          ],
+          "footer": ["Total Current Liabilities", "€2,500,000"]
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Equity",
+          "id": "h-equity"
+        },
+        {
+          "type": "table",
+          "id": "tbl-equity",
+          "columns": [
+            {
+              "id": "item",
+              "header": "Item",
+              "type": "text"
+            },
+            {
+              "id": "amount",
+              "header": "Amount (EUR)",
+              "type": "currency",
+              "currency": "EUR"
+            }
+          ],
+          "rows": [
+            {
+              "item": { "raw": "Share Capital", "display": "Share Capital" },
+              "amount": { "raw": 5000000.00, "display": "€5,000,000", "currency": "EUR" }
+            },
+            {
+              "item": { "raw": "Retained Earnings", "display": "Retained Earnings" },
+              "amount": { "raw": 8745000.00, "display": "€8,745,000", "currency": "EUR" }
+            }
+          ],
+          "footer": ["Total Equity", "€13,745,000"]
+        }
+      ]
+    },
+    {
+      "id": "sec-summary",
+      "title": "Summary",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Total Assets: €18,245,000",
+          "id": "p-total-assets"
+        },
+        {
+          "type": "paragraph",
+          "text": "Total Liabilities and Equity: €18,245,000",
+          "id": "p-total-liabilities-equity"
+        }
+      ]
+    }
+  ]
+}
+

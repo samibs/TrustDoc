@@ -1,0 +1,37 @@
+[workspace]
+members = [
+    "tdf-core",
+    "tdf-cli",
+    "tdf-wasm",
+    "tdf-convert",
+]
+exclude = [
+    "tdf-desktop-viewer/src-tauri",  # Tauri app has its own workspace
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["TrustDoc Contributors"]
+license = "MIT OR Apache-2.0"
+
+[workspace.dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_cbor = "0.11"
+sha2 = "0.10"
+blake3 = "1.5"
+ed25519-dalek = { version = "2.1", features = ["rand_core"] }
+k256 = "0.13"
+zip = "0.6"
+# For WASM builds, we need to disable compression features that require C stdlib
+thiserror = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.6", features = ["v4", "serde"] }
+wasm-bindgen = "0.2"
+serde-wasm-bindgen = "0.6"
+js-sys = "0.3"
+web-sys = "0.3"
+async-trait = "0.1"
+

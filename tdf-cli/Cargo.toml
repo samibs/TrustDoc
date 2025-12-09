@@ -1,0 +1,24 @@
+[package]
+name = "tdf-cli"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "CLI tool for TDF (TrustDoc Financial) format"
+
+[[bin]]
+name = "tdf"
+path = "src/main.rs"
+
+[dependencies]
+tdf-core = { path = "../tdf-core" }
+tdf-convert = { path = "../tdf-convert" }
+clap = { version = "4.4", features = ["derive"] }
+serde.workspace = true
+serde_json.workspace = true
+ed25519-dalek.workspace = true
+k256.workspace = true
+rand = "0.8"
+hex = "0.4"
+printpdf = "0.7"
+

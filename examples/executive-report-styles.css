@@ -1,0 +1,462 @@
+/* Corporate Financial Report - Professional Business Design */
+/* Sober, efficient, and color-controlled styling for executive documents */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Corporate color palette - conservative and professional */
+  --corp-primary: #1a1a1a;
+  --corp-secondary: #2c3e50;
+  --corp-accent: #34495e;
+  --corp-border: #d0d0d0;
+  --corp-bg-primary: #ffffff;
+  --corp-bg-secondary: #f8f9fa;
+  --corp-bg-accent: #f0f2f5;
+  --corp-text-primary: #1a1a1a;
+  --corp-text-secondary: #4a4a4a;
+  --corp-text-muted: #6c6c6c;
+  --corp-success: #2d5016;
+  --corp-warning: #8b6914;
+  --corp-danger: #8b1a1a;
+  --corp-link: #1a4d7a;
+  --corp-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --corp-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  line-height: 1.6;
+  color: var(--corp-text-primary);
+  background: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  font-size: 11pt;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.document-container,
+#content > div:first-child {
+  max-width: 8.5in;
+  margin: 0 auto;
+  background: var(--corp-bg-primary);
+  box-shadow: var(--corp-shadow);
+  overflow: hidden;
+}
+
+/* Corporate Header - Clean and Minimal */
+.document-header {
+  background: var(--corp-bg-primary);
+  color: var(--corp-text-primary);
+  padding: 60px 80px 40px 80px;
+  border-bottom: 3px solid var(--corp-primary);
+  text-align: left;
+}
+
+.document-title {
+  font-size: 24pt;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: var(--corp-primary);
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+}
+
+.document-subtitle {
+  font-size: 10pt;
+  color: var(--corp-text-secondary);
+  font-weight: 400;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.security-badge {
+  display: inline-block;
+  background: var(--corp-bg-secondary);
+  padding: 6px 12px;
+  border-radius: 2px;
+  margin-top: 16px;
+  font-size: 9pt;
+  font-weight: 500;
+  border: 1px solid var(--corp-border);
+  color: var(--corp-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Content Area */
+.document-content {
+  padding: 40px 80px 60px 80px;
+  background: var(--corp-bg-primary);
+}
+
+/* Typography - Corporate Standard */
+h1 {
+  font-size: 18pt;
+  color: var(--corp-primary);
+  margin: 32px 0 16px 0;
+  font-weight: 700;
+  border-bottom: 2px solid var(--corp-primary);
+  padding-bottom: 8px;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  page-break-after: avoid;
+}
+
+h1::after {
+  display: none;
+}
+
+h2 {
+  font-size: 14pt;
+  color: var(--corp-secondary);
+  margin: 28px 0 12px 0;
+  font-weight: 600;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  page-break-after: avoid;
+}
+
+h2::before {
+  display: none;
+}
+
+h3 {
+  font-size: 12pt;
+  color: var(--corp-text-primary);
+  margin: 20px 0 10px 0;
+  font-weight: 600;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+}
+
+p {
+  margin: 12px 0;
+  color: var(--corp-text-primary);
+  font-size: 11pt;
+  line-height: 1.7;
+  font-weight: 400;
+  text-align: justify;
+}
+
+/* Corporate Tables - Clean and Functional */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: white;
+  border: 1px solid var(--corp-border);
+  page-break-inside: avoid;
+}
+
+table caption {
+  font-weight: 600;
+  font-size: 11pt;
+  color: var(--corp-primary);
+  padding: 12px 16px;
+  background: var(--corp-bg-secondary);
+  text-align: left;
+  border-bottom: 1px solid var(--corp-border);
+  font-family: 'Arial', 'Helvetica', sans-serif;
+}
+
+table thead {
+  background: var(--corp-bg-secondary);
+  border-bottom: 2px solid var(--corp-primary);
+}
+
+table th {
+  padding: 10px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 10pt;
+  color: var(--corp-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  border-bottom: 2px solid var(--corp-primary);
+}
+
+table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--corp-border);
+  color: var(--corp-text-primary);
+  font-size: 11pt;
+  vertical-align: top;
+}
+
+table tbody tr {
+  background: white;
+}
+
+table tbody tr:hover {
+  background: var(--corp-bg-accent);
+}
+
+table tbody tr:nth-child(even) {
+  background: var(--corp-bg-secondary);
+}
+
+table tbody tr:nth-child(even):hover {
+  background: var(--corp-bg-accent);
+}
+
+table tfoot {
+  background: var(--corp-bg-secondary);
+  border-top: 2px solid var(--corp-primary);
+  font-weight: 600;
+}
+
+table tfoot td {
+  border-top: 2px solid var(--corp-primary);
+  color: var(--corp-primary);
+  font-size: 11pt;
+  padding: 10px 16px;
+}
+
+/* Status Indicators - Subtle and Professional */
+.status-verified,
+.status-valid,
+.status-certified,
+.status-active {
+  color: var(--corp-success);
+  font-weight: 600;
+  font-size: 10pt;
+}
+
+.status-verified::before,
+.status-valid::before,
+.status-certified::before,
+.status-active::before {
+  content: '✓';
+  margin-right: 4px;
+  color: var(--corp-success);
+}
+
+.positive-change {
+  color: var(--corp-success);
+  font-weight: 600;
+}
+
+.positive-change::before {
+  content: '+';
+  margin-right: 2px;
+}
+
+.negative-change {
+  color: var(--corp-danger);
+  font-weight: 600;
+}
+
+.negative-change::before {
+  content: '-';
+  margin-right: 2px;
+}
+
+/* Lists - Clean and Structured */
+ul, ol {
+  margin: 16px 0;
+  padding-left: 32px;
+}
+
+li {
+  margin: 8px 0;
+  color: var(--corp-text-primary);
+  line-height: 1.7;
+  font-size: 11pt;
+}
+
+ul li::marker {
+  color: var(--corp-text-secondary);
+}
+
+ol li::marker {
+  color: var(--corp-text-secondary);
+  font-weight: 600;
+}
+
+/* Security Section - Professional Highlight */
+.security-section {
+  background: var(--corp-bg-secondary);
+  border-left: 4px solid var(--corp-primary);
+  padding: 20px 24px;
+  margin: 24px 0;
+  border-radius: 0;
+  border-right: 1px solid var(--corp-border);
+  border-top: 1px solid var(--corp-border);
+  border-bottom: 1px solid var(--corp-border);
+}
+
+.security-section::before {
+  display: none;
+}
+
+.security-section h2 {
+  margin-top: 0;
+  color: var(--corp-primary);
+  border: none;
+  padding-bottom: 0;
+}
+
+/* Metadata - Subtle Display */
+.document-meta {
+  background: var(--corp-bg-secondary);
+  padding: 16px 20px;
+  border-radius: 0;
+  margin-bottom: 24px;
+  border: 1px solid var(--corp-border);
+  font-size: 9pt;
+  color: var(--corp-text-muted);
+  font-family: 'Courier New', monospace;
+}
+
+.document-meta p {
+  margin: 4px 0;
+  font-size: 9pt;
+  text-align: left;
+}
+
+.document-meta code {
+  background: white;
+  padding: 2px 6px;
+  border: 1px solid var(--corp-border);
+  border-radius: 2px;
+  font-size: 8pt;
+}
+
+.document-authors {
+  margin-bottom: 24px;
+  padding: 12px 16px;
+  background: var(--corp-bg-secondary);
+  border: 1px solid var(--corp-border);
+  font-size: 10pt;
+  color: var(--corp-text-secondary);
+}
+
+/* Footer - Minimal and Professional */
+.document-footer {
+  background: var(--corp-bg-secondary);
+  padding: 24px 80px;
+  text-align: center;
+  color: var(--corp-text-muted);
+  font-size: 9pt;
+  border-top: 1px solid var(--corp-border);
+}
+
+.security-note {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--corp-bg-accent);
+  border: 1px solid var(--corp-border);
+  border-radius: 0;
+  color: var(--corp-text-secondary);
+  font-weight: 500;
+  font-size: 9pt;
+  text-align: left;
+}
+
+/* Document Sections */
+.document-section {
+  margin-bottom: 32px;
+  page-break-inside: avoid;
+}
+
+/* Print Styles - Corporate Standard */
+@media print {
+  body {
+    background: white;
+    padding: 0;
+    font-size: 10pt;
+  }
+  
+  .document-container {
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 100%;
+  }
+  
+  .document-header {
+    background: white;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    page-break-after: avoid;
+    padding: 40px 60px 30px 60px;
+  }
+  
+  .document-content {
+    padding: 30px 60px 40px 60px;
+  }
+  
+  table {
+    page-break-inside: avoid;
+    border: 1px solid #000;
+  }
+  
+  table th {
+    background: #f0f0f0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  h1, h2 {
+    page-break-after: avoid;
+  }
+  
+  .security-badge,
+  .document-footer {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* Responsive - Maintain Corporate Aesthetic */
+@media (max-width: 768px) {
+  .document-header {
+    padding: 40px 40px 30px 40px;
+  }
+  
+  .document-title {
+    font-size: 20pt;
+  }
+  
+  .document-content {
+    padding: 30px 40px 40px 40px;
+  }
+  
+  table {
+    font-size: 10pt;
+  }
+  
+  table th,
+  table td {
+    padding: 8px 12px;
+  }
+}
+
+/* Remove all animations and decorative elements */
+* {
+  animation: none !important;
+  transition: background-color 0.1s ease, color 0.1s ease;
+}
+
+/* Ensure consistent corporate styling */
+.document-title:first-child {
+  display: block;
+  background: var(--corp-bg-primary);
+  color: var(--corp-primary);
+  padding: 60px 80px 40px 80px;
+  text-align: left;
+  position: relative;
+  overflow: visible;
+  margin: 0;
+  border: none;
+  border-bottom: 3px solid var(--corp-primary);
+  border-radius: 0;
+  font-size: 24pt;
+  font-weight: 700;
+  text-shadow: none;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+}

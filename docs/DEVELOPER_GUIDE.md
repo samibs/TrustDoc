@@ -52,24 +52,46 @@ The core library provides:
 - **Cryptography**: Signatures, hashing, Merkle trees
 - **Verification**: Integrity and signature verification
 - **Multi-party**: Workflow management for multiple signers
-- **Security**: Revocation, timestamp validation, DoS protection
+- **Security**: Comprehensive security modules including:
+  - **Key Management**: Secure key storage with automatic zeroization
+  - **Cryptographic Utilities**: Constant-time operations for timing attack resistance
+  - **Random Generation**: Cryptographically secure RNG with defense-in-depth
+  - **Audit Logging**: Structured logging for compliance and forensics
+  - **Error Sanitization**: Information leakage prevention
+  - **Integer Safety**: Overflow protection for memory safety
+  - **Resource Limits**: Circuit breakers, rate limiting, and resource budgets
+  - **Secure I/O**: Bounded reading and deserialization security
+  - **Signer Whitelist**: Trusted signer management with key binding
+  - **Revocation**: Key revocation and timestamp validation
+  - **DoS Protection**: Comprehensive denial-of-service attack prevention
 
 ### Module Structure
 
 ```
 tdf-core/
 ├── src/
-│   ├── lib.rs           # Public API exports
-│   ├── document.rs      # Document and manifest structures
-│   ├── content.rs       # Content blocks (text, tables, diagrams)
-│   ├── archive.rs        # ZIP archive operations
-│   ├── merkle.rs        # Merkle tree implementation
-│   ├── signature.rs     # Cryptographic signatures
-│   ├── timestamp.rs     # Timestamp authority
-│   ├── multiparty.rs    # Multi-party workflows
-│   ├── revocation.rs   # Key revocation
-│   ├── config.rs        # Security configuration
-│   └── error.rs         # Error types
+│   ├── lib.rs                    # Public API exports
+│   ├── document.rs               # Document and manifest structures
+│   ├── content.rs                # Content blocks (text, tables, diagrams)
+│   ├── archive.rs                 # ZIP archive operations
+│   ├── merkle.rs                 # Merkle tree implementation
+│   ├── signature.rs              # Cryptographic signatures
+│   ├── timestamp.rs              # Timestamp authority
+│   ├── multiparty.rs             # Multi-party workflows
+│   ├── revocation.rs            # Key revocation
+│   ├── config.rs                 # Security configuration
+│   ├── error.rs                  # Error types
+│   │
+│   # Security Modules (New)
+│   ├── secure_key.rs             # Secure key management with zeroization
+│   ├── crypto_utils.rs           # Constant-time cryptographic operations
+│   ├── secure_random.rs          # Cryptographically secure RNG
+│   ├── audit.rs                  # Audit logging infrastructure
+│   ├── error_sanitization.rs     # Error message sanitization
+│   ├── integer_safety.rs         # Integer overflow protection
+│   ├── resource_limits.rs        # Resource exhaustion protection
+│   ├── io.rs                     # Secure I/O with bounded reading
+│   └── whitelist.rs              # Signer whitelist management
 ```
 
 ## Project Structure

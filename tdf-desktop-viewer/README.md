@@ -5,11 +5,13 @@ Cross-platform desktop application for viewing and verifying TDF documents.
 ## Features
 
 - 📄 **Document Viewing**: View TDF documents with rich rendering
-- 🔐 **Integrity Verification**: Verify document integrity and signatures
+- 🔐 **Integrity Verification**: Enhanced verification with detailed signature analysis
+- 🔑 **Key Management**: Generate, import, export, and manage signing keys
 - 📊 **Data Extraction**: Extract structured data from documents
 - 🖨️ **Print Support**: Print documents directly
 - 🎨 **Native Feel**: Native OS integration (file associations, drag & drop)
 - ⚡ **Fast**: Built with Rust + Tauri for performance
+- 🛡️ **Security**: Uses all TDF security modules for maximum protection
 
 ## Supported Platforms
 
@@ -82,15 +84,26 @@ npm run tauri build -- --target x86_64-unknown-linux-gnu # Linux
 
 3. **Verify Integrity**
    - Click "Verify" button in toolbar
-   - View verification results
-   - Check signature status
+   - View enhanced verification results with:
+     - Integrity status
+     - Signature validation details
+     - Timestamp verification
+     - Signer information
+   - Check signature status for each signer
 
-4. **Extract Data**
+4. **Manage Keys**
+   - Generate new signing keypairs (Ed25519 or secp256k1)
+   - Import existing keys from files
+   - Export keys for backup or sharing
+   - View key details and metadata
+   - Delete keys when no longer needed
+
+5. **Extract Data**
    - Click "Extract" button
    - Data exported as JSON
    - Save to file
 
-5. **Print**
+6. **Print**
    - Click "Print" button
    - Use system print dialog
 
@@ -114,16 +127,27 @@ The installer automatically associates `.tdf` files with the viewer:
 
 ```
 tdf-desktop-viewer/
-├── src/              # Frontend (TypeScript)
-│   ├── main.ts       # Entry point
-│   ├── viewer.ts     # Document viewer logic
-│   └── renderer.ts   # Document rendering
-├── src-tauri/        # Backend (Rust)
-│   ├── Cargo.toml    # Rust dependencies
+├── src/                      # Frontend (TypeScript)
+│   ├── main.ts               # Entry point
+│   ├── app.ts                # Main application logic
+│   ├── documents.ts          # Document management
+│   ├── keys.ts               # Key management UI
+│   ├── key-list.ts           # Key list component
+│   ├── key-details.ts        # Key details component
+│   ├── verification-panel.ts # Verification panel
+│   ├── settings.ts           # Settings management
+│   ├── components/           # Reusable UI components
+│   ├── services/             # Service layer
+│   ├── layout/               # Layout components
+│   └── styles/               # CSS styles
+├── src-tauri/                # Backend (Rust)
+│   ├── Cargo.toml            # Rust dependencies
 │   └── src/
-│       └── main.rs   # Tauri commands
-├── package.json      # Node dependencies
-└── tauri.conf.json   # Tauri configuration
+│       ├── main.rs           # Tauri commands
+│       ├── keys.rs           # Key management backend
+│       └── documents.rs      # Document verification backend
+├── package.json              # Node dependencies
+└── tauri.conf.json           # Tauri configuration
 ```
 
 ### Adding Features

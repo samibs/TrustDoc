@@ -381,6 +381,530 @@ pub struct Section {
 
 ### Security Modules
 
+#### Secure Key Management (`secure_key`)
+
+##### `SecureKey`
+
+Secure key container with automatic zeroization.
+
+```rust
+pub struct SecureKey {
+    // key: Vec<u8> - automatically zeroized on drop
+}
+
+impl SecureKey {
+    /// Create a new secure key from bytes
+    pub fn new(key_bytes: Vec<u8>) -> Self;
+
+    /// Get a reference to the key bytes
+    pub fn as_bytes(&self) -> &[u8];
+
+    /// Get the key length
+    pub fn len(&self) -> usize;
+
+    /// Check if the key is empty
+    pub fn is_empty(&self) -> bool;
+
+    /// Consume the key and return the bytes
+    pub fn into_bytes(self) -> Vec<u8>;
+
+    /// Explicitly zeroize the key
+    pub fn zeroize(&mut self);
+}
+```
+
+**Example**:
+```rust
+use tdf_core::secure_key::SecureKey;
+
+let key = SecureKey::new(vec![1, 2, 3, 4, 5]);
+// Key is automatically zeroized when it goes out of scope
+```
+
+##### `SecureDerivedKey`
+
+Wrapper for derived keys with automatic zeroization.
+
+```rust
+pub struct SecureDerivedKey {
+    key: SecureKey,
+}
+
+impl SecureDerivedKey {
+    pub fn new(key: SecureKey) -> Self;
+    pub fn as_bytes(&self) -> &[u8];
+    pub fn into_secure_key(self) -> SecureKey;
+}
+```
+
+#### Cryptographic Utilities (`crypto_utils`)
+
+##### Constant-Time Comparison Functions
+
+```rust
+/// Constant-time equality comparison for byte slices
+pub fn ct_eq(a: &[u8], b: &[u8]) -> bool;
+
+/// Constant-time equality comparison for Vec<u8>
+pub fn ct_eq_vecs(a: &Vec<u8>, b: &Vec<u8>) -> bool;
+
+/// Constant-time equality comparison for hex-encoded strings
+pub fn ct_eq_hex(hex_a: &str, hex_b: &str) -> Result<bool, hex::FromHexError>;
+
+/// Constant-time selection between two values
+pub fn ct_select<T>(condition: bool, a: T, b: T) -> T
+where
+    T: subtle::ConditionallySelectable + Copy;
+
+/// Verify root hash in constant time
+pub fn verify_root_hash(computed: &[u8], expected: &[u8]) -> bool;
+
+/// Verify signature bytes in constant time
+pub fn verify_signature_bytes(computed: &[u8], expected: &[u8]) -> bool;
+```
+
+**Example**:
+```rust
+use tdf_core::crypto_utils::ct_eq;
+
+let hash1 = [0u8; 32];
+let hash2 = [0u8; 32];
+assert!(ct_eq(&hash1, &hash2));
+```
+
+#### Secure Random Generation (`secure_random`)
+
+##### Random Generation Functions
+
+```rust
+/// Generate cryptographically secure random bytes
+pub fn generate_secure_bytes(len: usize) -> TdfResult<Vec<u8>>;
+
+/// Generate a secure random token (32 bytes)
+pub fn generate_secure_token() -> TdfResult<[u8; 32]>;
+
+/// Generate a secure random nonce (12 bytes for GCM)
+pub fn generate_secure_nonce() -> TdfResult<[u8; 12]>;
+
+/// Generate a secure random UUID v4
+pub fn generate_secure_uuid() -> TdfResult<String>;
+
+/// Generate a secure random session ID (64-bit)
+pub fn generate_secure_session_id() -> TdfResult<u64>;
+```
+
+**Example**:
+```rust
+use tdf_core::secure_random::generate_secure_token;
+
+let token = generate_secure_token()?;
+// Use token for secure operations
+```
+
+#### Audit Logging (`audit`)
+
+##### `AuditLogger`
+
+Main audit logger for security events.
+
+```rust
+pub struct AuditLogger {
+    // ...
+}
+
+impl AuditLogger {
+    /// Create a new audit logger
+    pub fn new() -> Self;
+
+    /// Create a null logger (discards all events)
+    pub fn null() -> Self;
+
+    /// Add an output destination
+    pub fn add_output(&mut self, output: impl AuditOutput + 'static);
+
+    /// Set the source component name
+    pub fn set_source(&mut self, source: impl Into<String>);
+
+    /// Set the session ID
+    pub fn set_session_id(&mut self, session_id: impl Into<String>);
+
+    /// Log a verification event
+    pub fn log_verification(&self, event: VerificationEvent);
+
+    /// Log a simple info event
+    pub fn log_info(&self, event_type: AuditEventType, message: impl Into<String>);
+
+    /// Log a warning event
+    pub fn log_warning(&self, event_type: AuditEventType, message: impl Into<String>);
+
+    /// Log an error event
+    pub fn log_error(&self, event_type: AuditEventType, error: impl Into<String>);
+
+    /// Log a critical security event
+    pub fn log_critical(&self, event_type: AuditEventType, error: impl Into<String>);
+
+    /// Log a signature verification result
+    pub fn log_signature_verification(
+        &self,
+        document_hash: &str,
+        signer: AuditSignerInfo,
+        valid: bool,
+    );
+
+    /// Log a revocation check result
+    pub fn log_revocation_check(
+        &self,
+        signer_id: &str,
+        revoked: bool,
+        reason: Option<&str>,
+    );
+}
+```
+
+##### `AuditEntry`
+
+Individual audit log entry.
+
+```rust
+pub struct AuditEntry {
+    pub timestamp: DateTime<Utc>,
+    pub severity: AuditSeverity,
+    pub event_type: AuditEventType,
+    pub result: AuditResult,
+    pub document_hash: Option<String>,
+    pub document_id: Option<String>,
+    pub signers: Vec<AuditSignerInfo>,
+    pub warnings: Vec<String>,
+    pub error: Option<String>,
+    pub details: Option<String>,
+    pub source: Option<String>,
+    pub session_id: Option<String>,
+}
+```
+
+##### Audit Output Types
+
+```rust
+/// Trait for audit log output destinations
+pub trait AuditOutput: Send + Sync {
+    fn write(&self, entry: &AuditEntry) -> std::io::Result<()>;
+}
+
+/// Writer output (file, stderr, etc.)
+pub struct WriterOutput { /* ... */ }
+
+/// Memory output (for testing)
+pub struct MemoryOutput { /* ... */ }
+
+/// Null output (discards all entries)
+pub struct NullOutput;
+```
+
+**Example**:
+```rust
+use tdf_core::audit::{AuditLogger, MemoryOutput, AuditEventType};
+
+let mut logger = AuditLogger::new();
+logger.add_output(MemoryOutput::new());
+logger.log_info(AuditEventType::Verification, "Document verified");
+```
+
+#### Error Sanitization (`error_sanitization`)
+
+##### Sanitization Functions
+
+```rust
+/// Sanitize error messages to prevent information leakage
+pub fn sanitize_error(error: &TdfError) -> String;
+
+/// Create a generic error code for logging
+pub fn error_code(error: &TdfError) -> &'static str;
+```
+
+**Example**:
+```rust
+use tdf_core::error_sanitization::sanitize_error;
+
+let error = TdfError::InvalidDocument("File /secret/path.tdf not found".to_string());
+let sanitized = sanitize_error(&error);
+// Returns: "Invalid document" (path removed)
+```
+
+#### Integer Safety (`integer_safety`)
+
+##### Safe Arithmetic Functions
+
+```rust
+/// Safely add two u64 values with overflow checking
+pub fn checked_add(a: u64, b: u64) -> TdfResult<u64>;
+
+/// Safely multiply two u64 values with overflow checking
+pub fn checked_mul(a: u64, b: u64) -> TdfResult<u64>;
+
+/// Safely calculate total size from multiple components
+pub fn checked_sum<I>(sizes: I) -> TdfResult<u64>
+where
+    I: Iterator<Item = u64>;
+
+/// Safely calculate frame size including MAC and padding
+pub fn calculate_frame_size(
+    frame_size: u64,
+    mac_size: u64,
+    padding_size: Option<u64>,
+) -> TdfResult<u64>;
+
+/// Safely convert usize to u64
+pub fn usize_to_u64(value: usize) -> TdfResult<u64>;
+
+/// Safely convert u64 to usize
+pub fn u64_to_usize(value: u64) -> TdfResult<usize>;
+```
+
+**Example**:
+```rust
+use tdf_core::integer_safety::checked_add;
+
+let sum = checked_add(100, 200)?; // Ok(300)
+let overflow = checked_add(u64::MAX, 1); // Err(IntegerOverflow)
+```
+
+#### Resource Limits (`resource_limits`)
+
+##### `CircuitBreaker`
+
+Circuit breaker for preventing cascade failures.
+
+```rust
+pub struct CircuitBreaker {
+    // ...
+}
+
+impl CircuitBreaker {
+    /// Create a new circuit breaker
+    pub fn new(
+        failure_threshold: u64,
+        timeout: Duration,
+        half_open_timeout: Duration,
+    ) -> Self;
+
+    /// Check if request should be allowed
+    pub fn check(&self) -> TdfResult<()>;
+
+    /// Record a successful operation
+    pub fn record_success(&self);
+
+    /// Record a failed operation
+    pub fn record_failure(&self);
+}
+```
+
+##### `RateLimiter`
+
+Token bucket rate limiter.
+
+```rust
+pub struct RateLimiter {
+    // ...
+}
+
+impl RateLimiter {
+    /// Create a new rate limiter
+    pub fn new(capacity: u64, refill_rate: u64) -> Self;
+
+    /// Try to consume a token
+    pub fn try_acquire(&self) -> TdfResult<()>;
+}
+```
+
+##### `ResourceBudget`
+
+Resource budget tracker.
+
+```rust
+pub struct ResourceBudget {
+    // ...
+}
+
+impl ResourceBudget {
+    /// Create a new resource budget
+    pub fn new(max_cpu_time: u64, max_memory: u64, max_operations: u64) -> Self;
+
+    /// Check if operation is allowed within budget
+    pub fn check_budget(&self) -> TdfResult<()>;
+
+    /// Record CPU time usage
+    pub fn record_cpu_time(&self, ms: u64);
+
+    /// Record memory usage
+    pub fn record_memory(&self, bytes: u64);
+
+    /// Record an operation
+    pub fn record_operation(&self);
+
+    /// Reset the budget
+    pub fn reset(&self);
+}
+```
+
+**Example**:
+```rust
+use tdf_core::resource_limits::{CircuitBreaker, RateLimiter, ResourceBudget};
+use std::time::Duration;
+
+let breaker = CircuitBreaker::new(3, Duration::from_secs(1), Duration::from_millis(500));
+breaker.check()?;
+
+let limiter = RateLimiter::new(10, 5);
+limiter.try_acquire()?;
+
+let budget = ResourceBudget::new(1000, 1024 * 1024, 100);
+budget.check_budget()?;
+```
+
+#### Secure I/O (`io`)
+
+##### Bounded Readers
+
+```rust
+/// A reader wrapper that enforces a maximum read limit
+pub struct BoundedReader<R: Read> {
+    // ...
+}
+
+impl<R: Read> BoundedReader<R> {
+    pub fn new(reader: R, limit: u64) -> Self;
+    pub fn bytes_read(&self) -> u64;
+    pub fn remaining(&self) -> u64;
+}
+
+/// Read a file with size bounds
+pub fn read_bounded<R: Read>(reader: R, limit: u64) -> TdfResult<Vec<u8>>;
+
+/// Read with limit and pre-allocation
+pub fn read_with_limit<R: Read>(
+    reader: R,
+    expected_size: usize,
+    limit: u64,
+) -> TdfResult<Vec<u8>>;
+```
+
+##### Deserialization Security
+
+```rust
+/// Maximum CBOR recursion depth
+pub const MAX_CBOR_DEPTH: usize;
+
+/// Maximum size for CBOR deserialization
+pub const MAX_CBOR_SIZE: usize;
+
+/// Deserialize CBOR with size bounds and depth limits
+pub fn deserialize_cbor_bounded<T: serde::de::DeserializeOwned>(
+    data: &[u8],
+    max_size: usize,
+) -> TdfResult<T>;
+
+/// Deserialize JSON with size bounds
+pub fn deserialize_json_bounded<T: serde::de::DeserializeOwned>(
+    data: &[u8],
+    max_size: usize,
+) -> TdfResult<T>;
+```
+
+**Example**:
+```rust
+use tdf_core::io::{read_bounded, deserialize_cbor_bounded, MAX_CBOR_SIZE};
+use std::io::Cursor;
+
+let cursor = Cursor::new(data);
+let content = read_bounded(cursor, 1024 * 1024)?; // 1MB limit
+
+let parsed: MyStruct = deserialize_cbor_bounded(&cbor_data, MAX_CBOR_SIZE)?;
+```
+
+#### Signer Whitelist (`whitelist`)
+
+##### `SignerWhitelist`
+
+Whitelist of trusted signers.
+
+```rust
+pub struct SignerWhitelist {
+    pub name: String,
+    pub description: Option<String>,
+    pub trusted_signers: Vec<TrustedSigner>,
+}
+
+impl SignerWhitelist {
+    /// Create a new empty whitelist
+    pub fn new(name: String) -> Self;
+
+    /// Check if a signer ID is in the whitelist
+    pub fn is_trusted(&self, signer_id: &str) -> bool;
+
+    /// Get a trusted signer by ID
+    pub fn get_signer(&self, signer_id: &str) -> Option<&TrustedSigner>;
+
+    /// Add a trusted signer to the whitelist
+    pub fn add_signer(&mut self, signer: TrustedSigner);
+
+    /// Remove a signer from the whitelist
+    pub fn remove_signer(&mut self, signer_id: &str) -> bool;
+
+    /// Validate a signer with public key binding
+    pub fn validate_signer_key(
+        &self,
+        signer_id: &str,
+        public_key: &VerifyingKey,
+    ) -> WhitelistValidationResult;
+
+    /// Validate a signer with public key binding (strict mode)
+    pub fn validate_signer_key_strict(
+        &self,
+        signer_id: &str,
+        public_key: &VerifyingKey,
+    ) -> TdfResult<&TrustedSigner>;
+
+    /// Load whitelist from JSON
+    pub fn from_json(data: &[u8]) -> TdfResult<Self>;
+
+    /// Serialize whitelist to JSON
+    pub fn to_json(&self) -> TdfResult<Vec<u8>>;
+}
+```
+
+##### `TrustedSigner`
+
+Information about a trusted signer.
+
+```rust
+pub struct TrustedSigner {
+    pub id: String,
+    pub name: String,
+    pub public_key: Option<String>,
+    pub roles: Vec<String>,
+    pub email: Option<String>,
+}
+
+impl TrustedSigner {
+    pub fn new(id: String, name: String) -> Self;
+    pub fn with_roles(id: String, name: String, roles: Vec<String>) -> Self;
+    pub fn with_key(id: String, name: String, public_key: &VerifyingKey) -> Self;
+}
+```
+
+**Example**:
+```rust
+use tdf_core::whitelist::{SignerWhitelist, TrustedSigner};
+
+let mut whitelist = SignerWhitelist::new("ACME Corp".to_string());
+whitelist.add_signer(TrustedSigner::new(
+    "did:web:cfo.acme.com".to_string(),
+    "CFO Jane Smith".to_string(),
+));
+
+let result = whitelist.validate_signer_key("did:web:cfo.acme.com", &verifying_key);
+```
+
 #### `RevocationManager`
 
 Manages key revocation.

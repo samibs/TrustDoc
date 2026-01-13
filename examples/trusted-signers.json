@@ -1,0 +1,30 @@
+{
+  "name": "ACME Corp Trusted Signers",
+  "description": "Authorized signers for ACME Corporation financial documents",
+  "trusted_signers": [
+    {
+      "id": "did:web:cfo.acme.com",
+      "name": "CFO Jane Smith",
+      "roles": ["financial-approver", "auditor"],
+      "email": "jane.smith@acme.com"
+    },
+    {
+      "id": "did:web:ceo.acme.com",
+      "name": "CEO Bob Lee",
+      "roles": ["executive-approver"],
+      "email": "bob.lee@acme.com"
+    },
+    {
+      "id": "did:web:controller.acme.com",
+      "name": "Controller Sarah Johnson",
+      "roles": ["financial-approver", "compliance-officer"],
+      "email": "sarah.johnson@acme.com"
+    },
+    {
+      "id": "did:web:auditor.pwc.com",
+      "name": "External Auditor - PwC",
+      "roles": ["external-auditor"],
+      "email": "audit@pwc.com"
+    }
+  ]
+}

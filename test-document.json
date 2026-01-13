@@ -1,0 +1,97 @@
+{
+  "title": "Test TDF Document for GUI Testing",
+  "language": "en",
+  "styles": "body { font-family: Arial, sans-serif; line-height: 1.6; } h1 { color: #1a237e; } h2 { color: #283593; } table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #ddd; padding: 8px; text-align: left; } th { background-color: #f5f5f5; }",
+  "sections": [
+    {
+      "id": "section-1",
+      "title": "Introduction",
+      "content": [
+        {
+          "type": "heading",
+          "level": 1,
+          "text": "Welcome to TDF Testing",
+          "id": "h1-welcome"
+        },
+        {
+          "type": "paragraph",
+          "text": "This is a test document created for testing the TDF Desktop Viewer GUI. It demonstrates the basic structure of a TDF document.",
+          "id": "p-intro-1"
+        },
+        {
+          "type": "paragraph",
+          "text": "The document includes multiple sections, paragraphs, and structured content that can be verified for integrity.",
+          "id": "p-intro-2"
+        }
+      ]
+    },
+    {
+      "id": "section-2",
+      "title": "Test Data",
+      "content": [
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Sample Table",
+          "id": "h2-table"
+        },
+        {
+          "type": "table",
+          "id": "table-1",
+          "caption": "Test Products",
+          "columns": [
+            {
+              "id": "item",
+              "header": "Item",
+              "type": "text"
+            },
+            {
+              "id": "quantity",
+              "header": "Quantity",
+              "type": "number"
+            },
+            {
+              "id": "price",
+              "header": "Price",
+              "type": "currency",
+              "currency": "USD"
+            }
+          ],
+          "rows": [
+            {
+              "item": { "raw": "Product A", "display": "Product A" },
+              "quantity": { "raw": 10, "display": "10" },
+              "price": { "raw": 100.00, "display": "$100.00", "currency": "USD" }
+            },
+            {
+              "item": { "raw": "Product B", "display": "Product B" },
+              "quantity": { "raw": 5, "display": "5" },
+              "price": { "raw": 250.00, "display": "$250.00", "currency": "USD" }
+            },
+            {
+              "item": { "raw": "Product C", "display": "Product C" },
+              "quantity": { "raw": 3, "display": "3" },
+              "price": { "raw": 500.00, "display": "$500.00", "currency": "USD" }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "This table demonstrates structured data within the TDF format.",
+          "id": "p-table-desc"
+        }
+      ]
+    },
+    {
+      "id": "section-3",
+      "title": "Conclusion",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "This test document is ready for verification in the TDF Desktop Viewer. You can use it to test key management, document verification, and signature features.",
+          "id": "p-conclusion"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,284 @@
+/* Enterprise Design System - Enforced Standards
+ * NO hardcoded values allowed - use design tokens only
+ */
+
+:root {
+    /* ============================================
+       SEMANTIC COLOR PALETTE (NO DECORATIVE COLORS)
+       ============================================ */
+    
+    /* Status Colors - Semantic Meaning Only */
+    --color-success: #28a745;           /* Valid, Complete, Success */
+    --color-success-light: #d4edda;     /* Success background */
+    --color-success-dark: #218838;      /* Success hover/active */
+    
+    --color-error: #dc3545;             /* Invalid, Failed, Error */
+    --color-error-light: #f8d7da;       /* Error background */
+    --color-error-dark: #c82333;        /* Error hover/active */
+    
+    --color-warning: #ffc107;           /* Warning, Attention Required */
+    --color-warning-light: #fff3cd;     /* Warning background */
+    --color-warning-dark: #e0a800;      /* Warning hover/active */
+    
+    --color-info: #17a2b8;              /* Informational, Neutral */
+    --color-info-light: #d1ecf1;        /* Info background */
+    --color-info-dark: #138496;         /* Info hover/active */
+    
+    /* Action Colors - Semantic Meaning Only */
+    --color-primary: #0066cc;           /* Primary action */
+    --color-primary-light: #3385d6;     /* Primary hover */
+    --color-primary-dark: #0052a3;      /* Primary active */
+    --color-primary-bg: #e3f2fd;        /* Primary background */
+    
+    --color-secondary: #6c757d;         /* Secondary action */
+    --color-secondary-light: #8e9aaf;    /* Secondary hover */
+    --color-secondary-dark: #5a6268;    /* Secondary active */
+    --color-secondary-bg: #f8f9fa;      /* Secondary background */
+    
+    --color-danger: #dc3545;            /* Destructive action */
+    --color-danger-light: #f8d7da;      /* Danger background */
+    --color-danger-dark: #c82333;       /* Danger hover/active */
+    
+    /* Neutral Colors */
+    --color-text-primary: #212529;      /* Primary text */
+    --color-text-secondary: #6c757d;    /* Secondary text */
+    --color-text-muted: #adb5bd;        /* Muted text */
+    --color-text-inverse: #ffffff;      /* Inverse text (on dark) */
+    
+    --color-bg-primary: #ffffff;         /* Primary background */
+    --color-bg-secondary: #f8f9fa;      /* Secondary background */
+    --color-bg-tertiary: #e9ecef;       /* Tertiary background */
+    
+    --color-border: #dee2e6;            /* Default border */
+    --color-border-light: #e9ecef;       /* Light border */
+    --color-border-dark: #ced4da;        /* Dark border */
+    
+    /* ============================================
+       TYPOGRAPHY SCALE (MAX 3 SIZES PER SCREEN)
+       ============================================ */
+    
+    --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    --font-family-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Fira Mono', 'Droid Sans Mono', 'Source Code Pro', monospace;
+    
+    /* Heading Scale */
+    --font-size-h1: 1.75rem;            /* 28px */
+    --font-size-h2: 1.5rem;             /* 24px */
+    --font-size-h3: 1.25rem;            /* 20px */
+    --font-size-h4: 1.125rem;           /* 18px */
+    
+    /* Body Scale */
+    --font-size-body: 1rem;             /* 16px - DEFAULT */
+    --font-size-small: 0.875rem;        /* 14px */
+    --font-size-caption: 0.75rem;       /* 12px */
+    
+    /* Font Weights */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    
+    /* Line Heights */
+    --line-height-tight: 1.2;
+    --line-height-normal: 1.4;
+    --line-height-relaxed: 1.6;
+    
+    /* ============================================
+       SPACING SCALE (NO ARBITRARY VALUES)
+       ============================================ */
+    
+    --space-1: 0.25rem;                 /* 4px */
+    --space-2: 0.5rem;                   /* 8px */
+    --space-3: 0.75rem;                  /* 12px */
+    --space-4: 1rem;                     /* 16px */
+    --space-5: 1.5rem;                   /* 24px */
+    --space-6: 2rem;                     /* 32px */
+    --space-8: 3rem;                     /* 48px */
+    
+    /* ============================================
+       COMPONENT TOKENS
+       ============================================ */
+    
+    /* Button Heights */
+    --button-height-sm: 32px;
+    --button-height-md: 40px;
+    --button-height-lg: 48px;
+    
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-full: 9999px;
+    
+    /* Shadows - Professional Depth Only */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 10px 15px rgba(0, 0, 0, 0.12);
+    
+    /* Transitions */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Focus Outline (WCAG AA - 3:1 contrast minimum) */
+    --focus-outline-width: 2px;
+    --focus-outline-offset: 2px;
+    --focus-outline-color: var(--color-primary);
+}
+
+/* ============================================
+   TYPOGRAPHY ENFORCEMENT
+   ============================================ */
+
+body {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-primary);
+}
+
+h1 {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+h2 {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+h3 {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-normal);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+h4 {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-normal);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+small {
+    font-size: var(--font-size-small);
+    line-height: var(--line-height-normal);
+}
+
+code {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-small);
+    background: var(--color-bg-secondary);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+}
+
+/* ============================================
+   COLOR USAGE ENFORCEMENT
+   ============================================ */
+
+/* Success States */
+.success,
+.status-success,
+.text-success {
+    color: var(--color-success);
+}
+
+.bg-success {
+    background-color: var(--color-success-light);
+    border-color: var(--color-success);
+}
+
+/* Error States */
+.error,
+.status-error,
+.text-error {
+    color: var(--color-error);
+}
+
+.bg-error {
+    background-color: var(--color-error-light);
+    border-color: var(--color-error);
+}
+
+/* Warning States */
+.warning,
+.status-warning,
+.text-warning {
+    color: var(--color-warning);
+}
+
+.bg-warning {
+    background-color: var(--color-warning-light);
+    border-color: var(--color-warning);
+}
+
+/* Info States */
+.info,
+.status-info,
+.text-info {
+    color: var(--color-info);
+}
+
+.bg-info {
+    background-color: var(--color-info-light);
+    border-color: var(--color-info);
+}
+
+/* ============================================
+   SPACING ENFORCEMENT HELPERS
+   ============================================ */
+
+/* Margin Utilities */
+.m-1 { margin: var(--space-1); }
+.m-2 { margin: var(--space-2); }
+.m-3 { margin: var(--space-3); }
+.m-4 { margin: var(--space-4); }
+.m-5 { margin: var(--space-5); }
+.m-6 { margin: var(--space-6); }
+
+.mt-1 { margin-top: var(--space-1); }
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-5 { margin-top: var(--space-5); }
+.mt-6 { margin-top: var(--space-6); }
+
+.mb-1 { margin-bottom: var(--space-1); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-3 { margin-bottom: var(--space-3); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-5 { margin-bottom: var(--space-5); }
+.mb-6 { margin-bottom: var(--space-6); }
+
+/* Padding Utilities */
+.p-1 { padding: var(--space-1); }
+.p-2 { padding: var(--space-2); }
+.p-3 { padding: var(--space-3); }
+.p-4 { padding: var(--space-4); }
+.p-5 { padding: var(--space-5); }
+.p-6 { padding: var(--space-6); }
+
+/* Gap Utilities */
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-5 { gap: var(--space-5); }
+.gap-6 { gap: var(--space-6); }
+
+/* ============================================
+   DESIGN SYSTEM VALIDATION
+   ============================================ */
+
+/* This rule will highlight any hardcoded colors (if using a linter) */
+/* Developers should use design tokens, not hardcoded hex/rgb values */

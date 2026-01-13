@@ -18,6 +18,17 @@ use zip::write::{FileOptions, ZipWriter};
 use zip::CompressionMethod;
 use std::sync::atomic::{AtomicU32, Ordering};
 
+// CBOR helpers using ciborium (replaces unmaintained serde_cbor)
+fn cbor_to_vec<T: serde::Serialize>(value: &T) -> Result<Vec<u8>, ciborium::ser::Error<std::io::Error>> {
+    let mut buf = Vec::new();
+    ciborium::into_writer(value, &mut buf)?;
+    Ok(buf)
+}
+
+fn cbor_from_slice<T: serde::de::DeserializeOwned>(data: &[u8]) -> Result<T, ciborium::de::Error<std::io::Error>> {
+    ciborium::from_reader(data)
+}
+
 // Global counter for successful attacks (should always be 0)
 static SUCCESSFUL_ATTACKS: AtomicU32 = AtomicU32::new(0);
 static DETECTED_ATTACKS: AtomicU32 = AtomicU32::new(0);
@@ -87,7 +98,7 @@ fn attack_content_tampering(iteration: u32) -> bool {
     let mut content_bytes = Vec::new();
     zip.by_name("content.cbor").unwrap().read_to_end(&mut content_bytes).unwrap();
     
-    let mut content: DocumentContent = serde_cbor::from_slice(&content_bytes).unwrap();
+    let mut content: DocumentContent = cbor_from_slice(&content_bytes).unwrap();
     if let Some(section) = content.sections.first_mut() {
         if let Some(ContentBlock::Paragraph { text, .. }) = section.content.first_mut() {
             // Random tampering
@@ -96,7 +107,7 @@ fn attack_content_tampering(iteration: u32) -> bool {
             text.replace_range(tamper_pos..tamper_pos+1, "X");
         }
     }
-    let tampered_content = serde_cbor::to_vec(&content).unwrap();
+    let tampered_content = cbor_to_vec(&content).unwrap();
     
     // Rebuild archive
     let mut files_to_copy = HashMap::new();
@@ -148,9 +159,9 @@ fn attack_manifest_tampering(iteration: u32) -> bool {
     zip.by_name("manifest.cbor").unwrap().read_to_end(&mut manifest_bytes).unwrap();
     
     // Tamper with manifest (change title)
-    let mut manifest: document::Manifest = serde_cbor::from_slice(&manifest_bytes).unwrap();
+    let mut manifest: document::Manifest = cbor_from_slice(&manifest_bytes).unwrap();
     manifest.document.title = "TAMPERED TITLE".to_string();
-    let tampered_manifest = serde_cbor::to_vec(&manifest).unwrap();
+    let tampered_manifest = cbor_to_vec(&manifest).unwrap();
     
     // Rebuild archive
     let mut files_to_copy = HashMap::new();
@@ -228,7 +239,7 @@ fn attack_signature_replacement(iteration: u32) -> bool {
     let new_sig_block = signature::SignatureBlock {
         signatures: vec![attacker_signature],
     };
-    let new_sig_bytes = serde_cbor::to_vec(&new_sig_block).unwrap();
+    let new_sig_bytes = cbor_to_vec(&new_sig_block).unwrap();
     
     let file = fs::File::create(&path).unwrap();
     let mut zip_writer = ZipWriter::new(file);
@@ -375,10 +386,10 @@ fn attack_root_hash_substitution(iteration: u32) -> bool {
     let mut manifest_bytes = Vec::new();
     zip.by_name("manifest.cbor").unwrap().read_to_end(&mut manifest_bytes).unwrap();
     
-    let mut manifest: document::Manifest = serde_cbor::from_slice(&manifest_bytes).unwrap();
+    let mut manifest: document::Manifest = cbor_from_slice(&manifest_bytes).unwrap();
     // Replace root hash with fake one
     manifest.integrity.root_hash = "0000000000000000000000000000000000000000000000000000000000000000".to_string();
-    let tampered_manifest = serde_cbor::to_vec(&manifest).unwrap();
+    let tampered_manifest = cbor_to_vec(&manifest).unwrap();
     
     // Rebuild archive
     let mut files_to_copy = HashMap::new();

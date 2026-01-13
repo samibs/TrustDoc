@@ -253,30 +253,51 @@ fn test_timestamp_expired() {
 #[test]
 fn test_size_limit_enforcement() {
     let document = create_test_document();
-    let config = SecurityConfig::for_tier(SizeTier::Micro); // 256 KB limit
-    
+    let config = SecurityConfig::for_tier(SizeTier::Micro); // 256 KB limit, 64 KB per file
+
     let mut builder = archive::ArchiveBuilder::new(document);
     builder = builder.with_security_config(config);
-    
-    // Add large asset to exceed limit
-    let large_data = vec![0u8; 300 * 1024]; // 300 KB
-    builder.add_asset("large.bin".to_string(), large_data);
-    
-    let temp_dir = TempDir::new().unwrap();
-    let output_path = temp_dir.path().join("test.tdf");
-    
-    let result = builder.build(
-        &output_path,
-        None,
-        None,
-        None,
-    );
-    
+
+    // Try to add large asset that exceeds per-file limit (64 KB for Micro tier)
+    // CVE-TDF-021: add_asset now returns Result and validates size
+    let large_data = vec![0u8; 100 * 1024]; // 100 KB > 64 KB limit
+    let result = builder.add_asset("large.bin".to_string(), large_data);
+
     // Should fail due to size limit
     assert!(result.is_err());
     if let Err(e) = result {
         assert!(format!("{}", e).contains("exceeds limit"));
     }
+}
+
+#[test]
+fn test_path_traversal_protection() {
+    // CVE-TDF-021: Test path traversal attack prevention
+    let document = create_test_document();
+    let mut builder = archive::ArchiveBuilder::new(document);
+
+    // Test path traversal with ..
+    let result = builder.add_asset("../../../etc/passwd".to_string(), vec![0u8; 10]);
+    assert!(result.is_err());
+    if let Err(e) = &result {
+        let msg = format!("{}", e);
+        assert!(msg.contains("invalid") || msg.contains("traversal"), "Error should mention path issue: {}", msg);
+    }
+
+    // Test absolute path starting with /
+    let result = builder.add_asset("/etc/passwd".to_string(), vec![0u8; 10]);
+    assert!(result.is_err());
+
+    // Test absolute path starting with \
+    let result = builder.add_asset("\\Windows\\System32".to_string(), vec![0u8; 10]);
+    assert!(result.is_err());
+
+    // Valid paths should work
+    let result = builder.add_asset("assets/logo.png".to_string(), vec![0u8; 10]);
+    assert!(result.is_ok());
+
+    let result = builder.add_asset("images/photo.jpg".to_string(), vec![0u8; 10]);
+    assert!(result.is_ok());
 }
 
 #[test]

@@ -46,5 +46,16 @@
     "shortDescription": "Viewer for TDF documents",
     "longDescription": "Desktop application for viewing and verifying TrustDoc Financial (TDF) documents"
   },
-  "plugins": {}
+  "plugins": {
+    "dialog": {
+      "all": true,
+      "open": true
+    },
+    "fs": {
+      "all": true,
+      "readFile": true,
+      "writeFile": true,
+      "readDir": true
+    }
+  }
 }

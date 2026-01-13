@@ -1,0 +1,184 @@
+/* Button Component Styles - Enterprise Design System */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    text-decoration: none;
+    white-space: nowrap;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:focus-visible {
+    outline: var(--focus-outline-width) solid var(--focus-outline-color);
+    outline-offset: var(--focus-outline-offset);
+}
+
+/* Button Sizes */
+.btn-sm {
+    height: var(--button-height-sm);
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--font-size-small);
+}
+
+.btn-md {
+    height: var(--button-height-md);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--font-size-body);
+}
+
+.btn-lg {
+    height: var(--button-height-lg);
+    padding: var(--space-3) var(--space-5);
+    font-size: var(--font-size-h4);
+}
+
+/* Button Variants */
+.btn-primary {
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+    border-color: var(--color-primary);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--color-primary-light);
+    border-color: var(--color-primary-light);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:active:not(:disabled) {
+    background: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    border-color: var(--color-border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: var(--color-bg-tertiary);
+    border-color: var(--color-border-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:active:not(:disabled) {
+    background: var(--color-bg-tertiary);
+    border-color: var(--color-border-dark);
+    transform: translateY(0);
+}
+
+.btn-danger {
+    background: var(--color-danger);
+    color: var(--color-text-inverse);
+    border-color: var(--color-danger);
+}
+
+.btn-danger:hover:not(:disabled) {
+    background: var(--color-danger-dark);
+    border-color: var(--color-danger-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-danger:active:not(:disabled) {
+    background: var(--color-danger-dark);
+    border-color: var(--color-danger-dark);
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--color-text-primary);
+    border-color: transparent;
+}
+
+.btn-ghost:hover:not(:disabled) {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+}
+
+.btn-ghost:active:not(:disabled) {
+    background: var(--color-bg-tertiary);
+}
+
+/* Button States */
+.btn:disabled,
+.btn-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.btn-loading {
+    cursor: wait;
+    pointer-events: none;
+}
+
+.btn-full-width {
+    width: 100%;
+}
+
+/* Button Content */
+.btn-text {
+    display: inline-block;
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.btn-icon-left {
+    order: -1;
+}
+
+.btn-icon-right {
+    order: 1;
+}
+
+/* Loading Spinner */
+.btn-spinner {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: btn-spin 0.6s linear infinite;
+}
+
+@keyframes btn-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Button Group (for multiple buttons) */
+.btn-group {
+    display: inline-flex;
+    gap: var(--space-2);
+}
+
+.btn-group .btn {
+    margin: 0;
+}

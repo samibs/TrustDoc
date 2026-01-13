@@ -1,0 +1,161 @@
+/* Modal Component Styles - Enterprise Design System */
+
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-base);
+}
+
+.modal-container.modal-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-container.modal-closing {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+.modal-dialog {
+    position: relative;
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    z-index: 10001;
+    transform: scale(0.95) translateY(-10px);
+    transition: transform var(--transition-base);
+    overflow: hidden;
+}
+
+.modal-container.modal-open .modal-dialog {
+    transform: scale(1) translateY(0);
+}
+
+.modal-container.modal-closing .modal-dialog {
+    transform: scale(0.95) translateY(-10px);
+}
+
+/* Modal Sizes */
+.modal-sm {
+    width: 400px;
+}
+
+.modal-md {
+    width: 600px;
+}
+
+.modal-lg {
+    width: 800px;
+}
+
+.modal-xl {
+    width: 1000px;
+}
+
+/* Modal Header */
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-5) var(--space-5) var(--space-4);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.modal-title {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0;
+    flex: 1;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    padding: var(--space-2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    transition: all var(--transition-fast);
+    margin-left: var(--space-4);
+}
+
+.modal-close:hover {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+}
+
+.modal-close:focus-visible {
+    outline: var(--focus-outline-width) solid var(--focus-outline-color);
+    outline-offset: var(--focus-outline-offset);
+}
+
+/* Modal Body */
+.modal-body {
+    padding: var(--space-5);
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+/* Modal Footer */
+.modal-footer {
+    padding: var(--space-4) var(--space-5);
+    border-top: 1px solid var(--color-border-light);
+    background: var(--color-bg-secondary);
+}
+
+.modal-footer-actions {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: flex-end;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modal-dialog {
+        width: 95vw;
+        max-height: 95vh;
+        margin: var(--space-4);
+    }
+
+    .modal-sm,
+    .modal-md,
+    .modal-lg,
+    .modal-xl {
+        width: 95vw;
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding-left: var(--space-4);
+        padding-right: var(--space-4);
+    }
+}

@@ -6,6 +6,7 @@ use tdf_core::content::{ContentBlock, DocumentContent, Section};
 use tdf_core::document::Document;
 use tdf_core::error::{TdfError, TdfResult};
 use tdf_core::merkle::HashAlgorithm;
+use tdf_core::timestamp::ManualTimestampProvider;
 
 pub fn create_document(
     input: PathBuf,
@@ -13,6 +14,7 @@ pub fn create_document(
     signer_id: Option<String>,
     signer_name: Option<String>,
     key: Option<PathBuf>,
+    timestamp_manual: bool,
 ) -> TdfResult<()> {
     // Read input JSON
     let json_str = fs::read_to_string(&input)?;
@@ -86,16 +88,31 @@ pub fn create_document(
             .unwrap_or_else(|| PathBuf::from("output.tdf"))
     });
 
-    // Build archive
+    // Build archive with optional timestamp provider
     let mut builder = ArchiveBuilder::new(document);
-    builder.build(
-        &output_path,
-        signing_key.as_ref(),
-        signer_id,
-        signer_name,
-    )?;
 
-    println!("Created TDF document: {}", output_path.display());
+    if timestamp_manual {
+        let timestamp_provider = ManualTimestampProvider;
+        builder.build_with_timestamp(
+            &output_path,
+            signing_key.as_ref(),
+            None, // secp256k1 key
+            signer_id,
+            signer_name,
+            None, // use default signature algorithm
+            Some(&timestamp_provider),
+        )?;
+        println!("Created TDF document with manual timestamp: {}", output_path.display());
+    } else {
+        builder.build(
+            &output_path,
+            signing_key.as_ref(),
+            signer_id,
+            signer_name,
+        )?;
+        println!("Created TDF document: {}", output_path.display());
+    }
+
     Ok(())
 }
 

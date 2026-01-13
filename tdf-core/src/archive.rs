@@ -7,7 +7,16 @@ use crate::revocation::{RevocationList, RevocationManager};
 use crate::config::SecurityConfig;
 use ed25519_dalek::SigningKey;
 use k256::ecdsa::SigningKey as Secp256k1SigningKey;
-use serde_cbor;
+// CBOR helpers using ciborium (replaces unmaintained serde_cbor)
+fn cbor_to_vec<T: serde::Serialize>(value: &T) -> crate::error::TdfResult<Vec<u8>> {
+    let mut buf = Vec::new();
+    ciborium::into_writer(value, &mut buf)?;
+    Ok(buf)
+}
+
+fn cbor_from_slice<T: serde::de::DeserializeOwned>(data: &[u8]) -> crate::error::TdfResult<T> {
+    ciborium::from_reader(data).map_err(|e| e.into())
+}
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::{Read, Write};
@@ -53,12 +62,48 @@ impl ArchiveBuilder {
         self
     }
 
-    pub fn add_asset(&mut self, path: String, data: Vec<u8>) {
-        // Check file size limit
-        if let Err(e) = self.security_config.check_file_size(data.len() as u64) {
-            // Log warning but don't fail - caller can handle
-            eprintln!("Warning: Asset {} exceeds size limit: {}", path, e);
+    /// Add an asset to the archive
+    ///
+    /// Security Fix (CVE-TDF-021): Returns Result to allow callers to handle
+    /// size limit violations rather than silently accepting invalid assets.
+    ///
+    /// # Arguments
+    /// * `path` - The path/name of the asset within the archive
+    /// * `data` - The asset data
+    ///
+    /// # Returns
+    /// * `Ok(())` if asset was added successfully
+    /// * `Err(TdfError::FileSizeExceeded)` if asset exceeds size limits
+    pub fn add_asset(&mut self, path: String, data: Vec<u8>) -> TdfResult<()> {
+        // Validate asset path - prevent path traversal attacks
+        if path.contains("..") || path.starts_with('/') || path.starts_with('\\') {
+            return Err(TdfError::InvalidPath(format!(
+                "Asset path '{}' contains invalid characters or path traversal attempt",
+                path
+            )));
         }
+
+        // Check file size limit
+        self.security_config.check_file_size(data.len() as u64)?;
+
+        // Check total asset count limit
+        if self.assets.len() >= self.security_config.max_file_count {
+            return Err(TdfError::SizeExceeded(format!(
+                "Asset count {} would exceed limit {}",
+                self.assets.len() + 1,
+                self.security_config.max_file_count
+            )));
+        }
+
+        self.assets.insert(path, data);
+        Ok(())
+    }
+
+    /// Add an asset without size validation (use with caution)
+    ///
+    /// Only use this method when you've already validated the asset
+    /// or need to bypass validation for testing purposes.
+    pub fn add_asset_unchecked(&mut self, path: String, data: Vec<u8>) {
         self.assets.insert(path, data);
     }
 
@@ -87,12 +132,12 @@ impl ArchiveBuilder {
         self.document.validate()?;
 
         // Serialize components
-        let manifest_bytes = serde_cbor::to_vec(&self.document.manifest)?;
-        let content_bytes = serde_cbor::to_vec(&self.document.content)?;
+        let manifest_bytes = cbor_to_vec(&self.document.manifest)?;
+        let content_bytes = cbor_to_vec(&self.document.content)?;
         let styles_bytes = self.document.styles.as_bytes().to_vec();
 
         let layout_bytes = if let Some(ref layout) = self.document.layout {
-            Some(serde_cbor::to_vec(layout)?)
+            Some(cbor_to_vec(layout)?)
         } else {
             None
         };
@@ -126,6 +171,8 @@ impl ArchiveBuilder {
         // Compute Merkle tree
         let algorithm = match self.document.manifest.integrity.algorithm {
             crate::document::HashAlgorithm::Sha256 => HashAlgorithm::Sha256,
+            crate::document::HashAlgorithm::Sha3_256 => HashAlgorithm::Sha3_256,
+            crate::document::HashAlgorithm::Sha3_512 => HashAlgorithm::Sha3_512,
             crate::document::HashAlgorithm::Blake3 => HashAlgorithm::Blake3,
         };
 
@@ -183,22 +230,27 @@ impl ArchiveBuilder {
         }
 
         let signature_block = SignatureBlock { signatures };
-        let signatures_bytes = serde_cbor::to_vec(&signature_block)?;
+        let signatures_bytes = cbor_to_vec(&signature_block)?;
         let hashes_binary = merkle_tree.to_binary()?;
 
         // Estimate total size and check limits
-        let estimated_size = manifest_bytes.len()
-            + content_bytes.len()
-            + styles_bytes.len()
-            + layout_bytes.as_ref().map(|b| b.len()).unwrap_or(0)
-            + data_bytes.as_ref().map(|b| b.len()).unwrap_or(0)
-            + self.assets.values().map(|v| v.len()).sum::<usize>()
-            + hashes_binary.len()
-            + signatures_bytes.len()
-            + self.revocation_list.as_ref().map(|r| RevocationManager::to_cbor(r).unwrap().len()).unwrap_or(0);
+        // Security Fix (CVE-TDF-021): Use checked arithmetic to prevent overflow
+        use crate::integer_safety::checked_sum;
+        
+        let estimated_size = checked_sum([
+            manifest_bytes.len() as u64,
+            content_bytes.len() as u64,
+            styles_bytes.len() as u64,
+            layout_bytes.as_ref().map(|b| b.len() as u64).unwrap_or(0),
+            data_bytes.as_ref().map(|b| b.len() as u64).unwrap_or(0),
+            self.assets.values().map(|v| v.len() as u64).sum::<u64>(),
+            hashes_binary.len() as u64,
+            signatures_bytes.len() as u64,
+            self.revocation_list.as_ref().map(|r| RevocationManager::to_cbor(r).unwrap().len() as u64).unwrap_or(0),
+        ].iter().copied())?;
         
         // Check size limits
-        self.security_config.check_size(estimated_size as u64)?;
+        self.security_config.check_size(estimated_size)?;
 
         // Write ZIP archive
         let file = File::create(output_path)?;
@@ -208,7 +260,7 @@ impl ArchiveBuilder {
             .unix_permissions(0o644);
 
         // Write manifest (update with root hash)
-        let updated_manifest_bytes = serde_cbor::to_vec(&self.document.manifest)?;
+        let updated_manifest_bytes = cbor_to_vec(&self.document.manifest)?;
         zip.start_file(MANIFEST_FILE, options)?;
         zip.write_all(&updated_manifest_bytes)?;
 
@@ -286,7 +338,7 @@ impl ArchiveReader {
             manifest_file.read_to_end(&mut bytes)?;
             bytes
         };
-        let manifest: crate::document::Manifest = serde_cbor::from_slice(&manifest_bytes)?;
+        let manifest: crate::document::Manifest = cbor_from_slice(&manifest_bytes)?;
 
         // Read content
         let content_bytes = {
@@ -296,7 +348,7 @@ impl ArchiveReader {
             content_file.read_to_end(&mut bytes)?;
             bytes
         };
-        let content: crate::content::DocumentContent = serde_cbor::from_slice(&content_bytes)?;
+        let content: crate::content::DocumentContent = cbor_from_slice(&content_bytes)?;
 
         // Read styles
         let styles = {
@@ -312,7 +364,7 @@ impl ArchiveReader {
             if let Ok(mut layout_file) = zip.by_name(LAYOUT_FILE) {
                 let mut layout_bytes = Vec::new();
                 layout_file.read_to_end(&mut layout_bytes)?;
-                Some(serde_cbor::from_slice(&layout_bytes)?)
+                Some(cbor_from_slice(&layout_bytes)?)
             } else {
                 None
             }
@@ -347,7 +399,7 @@ impl ArchiveReader {
             signatures_file.read_to_end(&mut bytes)?;
             bytes
         };
-        let signature_block: SignatureBlock = serde_cbor::from_slice(&signatures_bytes)?;
+        let signature_block: SignatureBlock = cbor_from_slice(&signatures_bytes)?;
 
         let document = Document {
             manifest,
@@ -373,7 +425,7 @@ impl ArchiveReader {
             manifest_file.read_to_end(&mut bytes)?;
             bytes
         };
-        let manifest: crate::document::Manifest = serde_cbor::from_slice(&manifest_bytes)?;
+        let manifest: crate::document::Manifest = cbor_from_slice(&manifest_bytes)?;
 
         // Read content
         let content_bytes = {
@@ -383,7 +435,7 @@ impl ArchiveReader {
             content_file.read_to_end(&mut bytes)?;
             bytes
         };
-        let content: crate::content::DocumentContent = serde_cbor::from_slice(&content_bytes)?;
+        let content: crate::content::DocumentContent = cbor_from_slice(&content_bytes)?;
 
         // Read styles
         let styles = {
@@ -399,7 +451,7 @@ impl ArchiveReader {
             if let Ok(mut layout_file) = zip.by_name(LAYOUT_FILE) {
                 let mut layout_bytes = Vec::new();
                 layout_file.read_to_end(&mut layout_bytes)?;
-                Some(serde_cbor::from_slice(&layout_bytes)?)
+                Some(cbor_from_slice(&layout_bytes)?)
             } else {
                 None
             }
@@ -434,7 +486,7 @@ impl ArchiveReader {
             signatures_file.read_to_end(&mut bytes)?;
             bytes
         };
-        let signature_block: SignatureBlock = serde_cbor::from_slice(&signatures_bytes)?;
+        let signature_block: SignatureBlock = cbor_from_slice(&signatures_bytes)?;
 
         // Read revocation list (optional)
         let revocation_list = {
@@ -502,10 +554,10 @@ impl ArchiveReader {
         };
         
         // Parse manifest to remove root_hash for hashing
-        let mut manifest: crate::document::Manifest = serde_cbor::from_slice(&manifest_bytes)?;
+        let mut manifest: crate::document::Manifest = cbor_from_slice(&manifest_bytes)?;
         let _stored_root_hash = manifest.integrity.root_hash.clone();
         manifest.integrity.root_hash = String::new();
-        let manifest_bytes_for_hash = serde_cbor::to_vec(&manifest)?;
+        let manifest_bytes_for_hash = cbor_to_vec(&manifest)?;
         
         // Read content bytes
         let content_bytes = {
@@ -570,6 +622,10 @@ impl ArchiveReader {
         };
         let merkle_tree = MerkleTree::from_binary(&hashes_bytes)?;
 
+        // === SECURITY HARDENING (Attack Phase 1): Check Merkle tree version ===
+        // Reject legacy Merkle trees (v1) that lack domain separators (CVE-TDF-002)
+        security_config.check_merkle_version(merkle_tree.version())?;
+
         // Read signatures
         let signatures_bytes = {
             let mut signatures_file = zip.by_name(SIGNATURES_FILE)
@@ -578,7 +634,17 @@ impl ArchiveReader {
             signatures_file.read_to_end(&mut bytes)?;
             bytes
         };
-        let signature_block: SignatureBlock = serde_cbor::from_slice(&signatures_bytes)?;
+        let signature_block: SignatureBlock = cbor_from_slice(&signatures_bytes)?;
+
+        // === SECURITY HARDENING (Attack Phase 1): Check signature versions ===
+        // Reject legacy signatures (v1) that lack timestamp binding (CVE-TDF-003)
+        for sig in &signature_block.signatures {
+            security_config.check_signature_version(sig.version)?;
+
+            // Also check timestamp source if RFC 3161 is required
+            let has_rfc3161_proof = sig.timestamp.proof.is_some();
+            security_config.check_timestamp_source(has_rfc3161_proof)?;
+        }
 
         // Read revocation list (optional) and combine with external
         let mut combined_revocation_manager = RevocationManager::new();
@@ -629,7 +695,7 @@ impl ArchiveReader {
         // Reconstruct document for report
         let document = Document {
             manifest,
-            content: serde_cbor::from_slice(&components["content"])?,
+            content: cbor_from_slice(&components["content"])?,
             styles: String::from_utf8_lossy(&components["styles"]).to_string(),
             layout: None,
             data: None,

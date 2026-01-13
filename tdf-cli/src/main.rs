@@ -54,6 +54,9 @@ enum Commands {
         /// Path to signing key file (Ed25519 private key)
         #[arg(long)]
         key: Option<PathBuf>,
+        /// Use manual timestamp (local system time)
+        #[arg(long)]
+        timestamp_manual: bool,
     },
     /// Verify integrity and signatures of a TDF document
     Verify {
@@ -62,6 +65,27 @@ enum Commands {
         /// Path to verifying key file (Ed25519 public key)
         #[arg(short, long)]
         key: Option<PathBuf>,
+        /// Security tier: micro, standard, extended, permissive
+        #[arg(long, default_value = "standard")]
+        security_tier: String,
+        /// Path to revocation list file (CBOR)
+        #[arg(long)]
+        revocation_list: Option<PathBuf>,
+        /// Path to trusted signers whitelist file (JSON)
+        #[arg(long)]
+        trusted_signers: Option<PathBuf>,
+        /// Allow unsigned documents (skip signature requirement)
+        #[arg(long)]
+        allow_unsigned: bool,
+        /// Lenient mode: allow warnings without failing (default is strict)
+        #[arg(long)]
+        lenient: bool,
+        /// Enforce whitelist: fail if signer not in whitelist
+        #[arg(long)]
+        enforce_whitelist: bool,
+        /// Skip revocation checking
+        #[arg(long)]
+        skip_revocation: bool,
     },
     /// Extract structured data from a TDF document
     Extract {
@@ -157,8 +181,31 @@ fn main() {
             signer_id,
             signer_name,
             key,
-        } => commands::create::create_document(input, output, signer_id, signer_name, key),
-        Commands::Verify { document, key } => commands::verify::verify_document(document, key),
+            timestamp_manual,
+        } => commands::create::create_document(input, output, signer_id, signer_name, key, timestamp_manual),
+        Commands::Verify {
+            document,
+            key,
+            security_tier,
+            revocation_list,
+            trusted_signers,
+            allow_unsigned,
+            lenient,
+            enforce_whitelist,
+            skip_revocation,
+        } => {
+            commands::verify::verify_document(
+                document,
+                key,
+                security_tier,
+                revocation_list,
+                trusted_signers,
+                allow_unsigned,
+                lenient,
+                enforce_whitelist,
+                skip_revocation,
+            )
+        }
         Commands::Extract { document, output } => commands::extract::extract_data(document, output),
         Commands::Info { document } => commands::info::show_info(document),
         Commands::Export { document, output } => commands::export::export_to_pdf(document, output),

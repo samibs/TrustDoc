@@ -1,4 +1,4 @@
-import { TdfDocument, ContentBlock, TableBlock, DiagramBlock } from 'tdf-ts';
+import { TdfDocument, ContentBlock, TableBlock } from 'tdf-ts';
 import { renderDiagram } from './diagram';
 
 export function renderDocument(doc: TdfDocument, container: HTMLElement) {

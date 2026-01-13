@@ -14,6 +14,17 @@ use zip::ZipArchive;
 use zip::write::{FileOptions, ZipWriter};
 use zip::CompressionMethod;
 
+// CBOR helpers using ciborium (replaces unmaintained serde_cbor)
+fn cbor_to_vec<T: serde::Serialize>(value: &T) -> Result<Vec<u8>, ciborium::ser::Error<std::io::Error>> {
+    let mut buf = Vec::new();
+    ciborium::into_writer(value, &mut buf)?;
+    Ok(buf)
+}
+
+fn cbor_from_slice<T: serde::de::DeserializeOwned>(data: &[u8]) -> Result<T, ciborium::de::Error<std::io::Error>> {
+    ciborium::from_reader(data)
+}
+
 // Helper: Create a realistic financial document
 fn create_financial_document() -> Document {
     let content = DocumentContent {
@@ -94,7 +105,7 @@ fn test_e2e_content_tampering_detection() {
     let mut content_bytes = Vec::new();
     zip.by_name("content.cbor").unwrap().read_to_end(&mut content_bytes).unwrap();
     
-    let mut content: DocumentContent = serde_cbor::from_slice(&content_bytes).unwrap();
+    let mut content: DocumentContent = cbor_from_slice(&content_bytes).unwrap();
     // Modify revenue text
     if let Some(section) = content.sections.first_mut() {
         if let Some(ContentBlock::Paragraph { text, .. }) = section.content.iter_mut().find(|b| {
@@ -103,7 +114,7 @@ fn test_e2e_content_tampering_detection() {
             *text = "Revenue increased by 50% compared to Q1.".to_string(); // Fraudulent claim
         }
     }
-    let tampered_content = serde_cbor::to_vec(&content).unwrap();
+    let tampered_content = cbor_to_vec(&content).unwrap();
     
     // Read all files first
     let mut files_to_copy = std::collections::HashMap::new();
@@ -189,7 +200,7 @@ fn test_e2e_man_in_the_middle_attack() {
     
     let mut content_bytes = Vec::new();
     zip.by_name("content.cbor").unwrap().read_to_end(&mut content_bytes).unwrap();
-    let mut content: DocumentContent = serde_cbor::from_slice(&content_bytes).unwrap();
+    let mut content: DocumentContent = cbor_from_slice(&content_bytes).unwrap();
     // Change revenue
     if let Some(section) = content.sections.first_mut() {
         if let Some(ContentBlock::Paragraph { text, .. }) = section.content.iter_mut().find(|b| {
@@ -198,7 +209,7 @@ fn test_e2e_man_in_the_middle_attack() {
             *text = "Revenue DECREASED by 10%.".to_string();
         }
     }
-    let _tampered_content = serde_cbor::to_vec(&content).unwrap();
+    let _tampered_content = cbor_to_vec(&content).unwrap();
     
     // 2. Recompute Merkle tree (attacker would need to do this)
     // But they can't without knowing the original structure, so they'll fail
@@ -317,7 +328,7 @@ fn test_e2e_multi_party_signature_attack() {
         zip_writer.start_file(name, options).unwrap();
         zip_writer.write_all(&data).unwrap();
     }
-    let sig_bytes = serde_cbor::to_vec(&sig_block).unwrap();
+    let sig_bytes = cbor_to_vec(&sig_block).unwrap();
     zip_writer.start_file("signatures.cbor", options).unwrap();
     zip_writer.write_all(&sig_bytes).unwrap();
     zip_writer.finish().unwrap();
@@ -361,7 +372,7 @@ fn test_e2e_multi_party_signature_attack() {
         zip_writer.start_file(name, options).unwrap();
         zip_writer.write_all(&data).unwrap();
     }
-    let sig_bytes = serde_cbor::to_vec(&sig_block_attacked).unwrap();
+    let sig_bytes = cbor_to_vec(&sig_block_attacked).unwrap();
     zip_writer.start_file("signatures.cbor", options).unwrap();
     zip_writer.write_all(&sig_bytes).unwrap();
     zip_writer.finish().unwrap();
@@ -467,7 +478,7 @@ fn test_e2e_timestamp_manipulation_attack() {
     let mut sig_bytes = Vec::new();
     zip.by_name("signatures.cbor").unwrap().read_to_end(&mut sig_bytes).unwrap();
     
-    let mut sig_block: tdf_core::signature::SignatureBlock = serde_cbor::from_slice(&sig_bytes).unwrap();
+    let mut sig_block: tdf_core::signature::SignatureBlock = cbor_from_slice(&sig_bytes).unwrap();
     // Try to backdate (this would require re-signing, but test the structure)
     if let Some(sig) = sig_block.signatures.first_mut() {
         // Modify timestamp (but signature won't match)
@@ -496,18 +507,17 @@ fn test_e2e_timestamp_manipulation_attack() {
         zip_writer.start_file(name, options).unwrap();
         zip_writer.write_all(&data).unwrap();
     }
-    let tampered_sig_bytes = serde_cbor::to_vec(&sig_block).unwrap();
+    let tampered_sig_bytes = cbor_to_vec(&sig_block).unwrap();
     zip_writer.start_file("signatures.cbor", options).unwrap();
     zip_writer.write_all(&tampered_sig_bytes).unwrap();
     zip_writer.finish().unwrap();
     
     // DETECTION: Signature verification should fail (signature doesn't match modified timestamp)
-    // Actually, timestamp is not part of signed data, so signature still verifies
-    // But timestamp authority proof would fail if present
+    // Security Fix (CVE-TDF-003): Timestamp is NOW part of signed data in v2 signatures
     let report = ArchiveReader::verify(&output_path).unwrap();
-    assert!(report.integrity_valid); // Integrity still valid
-    
-    // But timestamp is now wrong - in real scenario, check timestamp authority
+    assert!(report.integrity_valid); // Integrity still valid (Merkle tree intact)
+
+    // Verify that timestamp manipulation is detected
     let (_, _, sig_block_final) = ArchiveReader::read(&output_path).unwrap();
     let root_hash = hex::decode(report.root_hash).unwrap();
     let verifying_key = VerifyingKey::from(&signing_key);
@@ -517,10 +527,13 @@ fn test_e2e_timestamp_manipulation_attack() {
         &root_hash,
         &verifying_keys,
     ).unwrap();
-    
-    // Signature still verifies (timestamp not in signed data)
-    // In production, you'd validate timestamp separately
-    assert!(results.iter().any(|r| matches!(r, VerificationResult::Valid { .. })));
+
+    // Security Fix (CVE-TDF-003): Timestamp is bound to signature in v2
+    // Signature verification should FAIL because timestamp was manipulated
+    assert!(
+        results.iter().any(|r| matches!(r, VerificationResult::Invalid { .. })),
+        "Timestamp manipulation should be detected and invalidate the signature"
+    );
 }
 
 #[test]
@@ -728,7 +741,7 @@ fn test_e2e_complete_workflow_under_attack() {
         zip_writer.start_file(name, options).unwrap();
         zip_writer.write_all(&data).unwrap();
     }
-    let sig_bytes = serde_cbor::to_vec(&sig_block).unwrap();
+    let sig_bytes = cbor_to_vec(&sig_block).unwrap();
     zip_writer.start_file("signatures.cbor", options).unwrap();
     zip_writer.write_all(&sig_bytes).unwrap();
     zip_writer.finish().unwrap();
@@ -761,7 +774,7 @@ fn test_e2e_complete_workflow_under_attack() {
     
     let mut content_bytes = Vec::new();
     zip.by_name("content.cbor").unwrap().read_to_end(&mut content_bytes).unwrap();
-    let mut content: DocumentContent = serde_cbor::from_slice(&content_bytes).unwrap();
+    let mut content: DocumentContent = cbor_from_slice(&content_bytes).unwrap();
     // Modify
     if let Some(section) = content.sections.first_mut() {
         if let Some(ContentBlock::Paragraph { text, .. }) = section.content.iter_mut().find(|b| {
@@ -770,7 +783,7 @@ fn test_e2e_complete_workflow_under_attack() {
             *text = "TAMPERED AFTER SIGNING".to_string();
         }
     }
-    let tampered_content = serde_cbor::to_vec(&content).unwrap();
+    let tampered_content = cbor_to_vec(&content).unwrap();
     
     // Read all files first
     let mut files_to_copy = std::collections::HashMap::new();

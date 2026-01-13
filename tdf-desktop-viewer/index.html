@@ -4,43 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TDF Desktop Viewer</title>
+    <link rel="stylesheet" href="src/styles/design-system.css">
+    <link rel="stylesheet" href="src/styles/components.css">
+    <link rel="stylesheet" href="src/styles/modal.css">
+    <link rel="stylesheet" href="src/styles/table.css">
+    <link rel="stylesheet" href="src/styles/error.css">
+    <link rel="stylesheet" href="src/styles/keyboard-shortcuts.css">
+    <link rel="stylesheet" href="src/styles/progressive-disclosure.css">
     <link rel="stylesheet" href="src/styles.css">
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="errorBanner" class="error-banner-container"></div>
     <div class="container">
         <header>
-            <h1>🔐 TDF Desktop Viewer</h1>
+            <h1>TDF Desktop Viewer</h1>
             <p>TrustDoc Financial Document Viewer</p>
         </header>
 
+        <main id="main-content">
         <div class="upload-area" id="uploadArea">
             <div class="upload-prompt">
-                <p>📄 Drag and drop a .tdf file here, or</p>
-                <button id="browseBtn">Browse Files</button>
+                <p>Drag and drop a .tdf file here, or</p>
+                <button id="browseBtn" aria-label="Browse Files" tabindex="0">
+                    <span class="icon-container" id="browseIcon"></span>
+                    Browse Files
+                </button>
+                <input type="file" id="fileInput" accept=".tdf" style="display: none;">
                 <p class="hint">Or use File → Open from the menu</p>
             </div>
         </div>
 
         <div class="document-view" id="documentView" style="display: none;">
             <div class="toolbar">
-                <button id="verifyBtn" title="Verify document integrity and signatures">
-                    🔍 Verify
+                <button id="verifyBtn" title="Verify document integrity and signatures" aria-label="Verify document (Ctrl+V)" tabindex="0">
+                    <span class="icon-container" id="verifyIcon"></span>
+                    Verify
                 </button>
-                <button id="extractBtn" title="Extract structured data">
-                    📊 Extract Data
+                <button id="extractBtn" title="Extract structured data" aria-label="Extract Data (Ctrl+E)" tabindex="0">
+                    <span class="icon-container" id="extractIcon"></span>
+                    Extract Data
                 </button>
-                <button id="printBtn" title="Print document">
-                    🖨️ Print
+                <button id="printBtn" title="Print document" aria-label="Print (Ctrl+P)" tabindex="0">
+                    <span class="icon-container" id="printIcon"></span>
+                    Print
                 </button>
-                <button id="openBtn" title="Open another document">
-                    📂 Open
+                <button id="openBtn" title="Open another document" aria-label="Open another document (Ctrl+O)" tabindex="0" style="display: none;">
+                    <span class="icon-container" id="openIcon"></span>
+                    Open
                 </button>
             </div>
 
-            <div class="status" id="status"></div>
             <div class="verification-panel" id="verificationPanel" style="display: none;"></div>
 
             <div class="content" id="content"></div>
+        </div>
+        </main>
+        
+        <!-- Persistent Status Bar -->
+        <div class="status-bar" id="statusBar" role="status" aria-live="polite" aria-atomic="true">
+            <span class="status-message status-ready">Ready</span>
         </div>
     </div>
 

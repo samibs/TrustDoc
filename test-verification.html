@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Test</title>
+    <script type="module">
+        import { verifyIntegrity } from './tdf-ts/src/verification.ts';
+
+        // Mock document for testing
+        const mockDocument = {
+            manifest: {
+                schema_version: "1.0",
+                document: {
+                    id: "test-doc-123",
+                    title: "Test Document",
+                    language: "en",
+                    created: new Date().toISOString(),
+                    modified: new Date().toISOString()
+                },
+                authors: [{ id: "author1", name: "Test Author", role: "creator" }],
+                integrity: {
+                    root_hash: "abc123def456",
+                    algorithm: "sha256"
+                }
+            },
+            content: {
+                sections: [
+                    { id: "sec1", title: "Section 1", content: [] },
+                    { id: "sec2", title: "Section 2", content: [] }
+                ]
+            },
+            styles: "",
+            data: {}
+        };
+
+        window.onload = function() {
+            console.log('Testing verification...');
+            try {
+                const result = verifyIntegrity(mockDocument);
+                console.log('Verification result:', result);
+                document.getElementById('result').textContent = result ? 'PASS: Document is valid' : 'FAIL: Document is invalid';
+            } catch (error) {
+                console.error('Verification error:', error);
+                document.getElementById('result').textContent = 'ERROR: ' + error.message;
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1>Verification Test</h1>
+    <div id="result">Testing...</div>
+</body>
+</html>

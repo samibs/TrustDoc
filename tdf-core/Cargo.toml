@@ -10,7 +10,8 @@ repository = "https://github.com/trustdoc/tdf"
 [dependencies]
 serde.workspace = true
 serde_json.workspace = true
-serde_cbor.workspace = true
+# ciborium replaces unmaintained serde_cbor (Phase 3.5)
+ciborium = "0.2"
 sha2.workspace = true
 blake3.workspace = true
 ed25519-dalek.workspace = true
@@ -22,6 +23,12 @@ chrono.workspace = true
 uuid.workspace = true
 base64 = "0.21"
 hex = "0.4"
+subtle = "2.5"  # Constant-time operations (CVE-TDF-024)
+zeroize = { version = "1.7", features = ["zeroize_derive"] }  # Key zeroization (CVE-TDF-026)
+rand_core = "0.6"  # Secure random number generation (CVE-TDF-025)
+regex = "1.10"  # Error message sanitization (Vuln #11, #12)
+hmac = "0.12"  # HMAC for Merkle tree protection (Vuln #45)
+sha3 = "0.10"  # SHA-3 for quantum resistance (Vuln #49)
 reqwest = { version = "0.11", features = ["rustls-tls"], optional = true }
 async-trait.workspace = true
 
@@ -34,4 +41,5 @@ hex = "0.4"
 tempfile = "3.8"
 rand = "0.8"
 rayon = "1.8"
+ciborium = "0.2"  # For CBOR serialization in tests
 

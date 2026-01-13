@@ -60,6 +60,10 @@ pub struct IntegrityBlock {
 #[serde(rename_all = "lowercase")]
 pub enum HashAlgorithm {
     Sha256,
+    #[serde(rename = "sha3_256")]
+    Sha3_256,
+    #[serde(rename = "sha3_512")]
+    Sha3_512,
     Blake3,
 }
 

@@ -17,6 +17,17 @@ use zip::ZipArchive;
 use zip::write::{FileOptions, ZipWriter};
 use zip::CompressionMethod;
 
+// CBOR helpers using ciborium (replaces unmaintained serde_cbor)
+fn cbor_to_vec<T: serde::Serialize>(value: &T) -> Result<Vec<u8>, ciborium::ser::Error<std::io::Error>> {
+    let mut buf = Vec::new();
+    ciborium::into_writer(value, &mut buf)?;
+    Ok(buf)
+}
+
+fn cbor_from_slice<T: serde::de::DeserializeOwned>(data: &[u8]) -> Result<T, ciborium::de::Error<std::io::Error>> {
+    ciborium::from_reader(data)
+}
+
 // Helper: Create a valid test document
 fn create_test_document() -> Document {
     let content = DocumentContent {
@@ -83,13 +94,13 @@ fn test_tamper_content_modification() {
     zip.by_name("content.cbor").unwrap().read_to_end(&mut content_bytes).unwrap();
     
     // Modify content (change text)
-    let mut content: DocumentContent = serde_cbor::from_slice(&content_bytes).unwrap();
+    let mut content: DocumentContent = cbor_from_slice(&content_bytes).unwrap();
     if let Some(section) = content.sections.first_mut() {
         if let Some(ContentBlock::Paragraph { text, .. }) = section.content.first_mut() {
             *text = "TAMPERED CONTENT - This should be detected!".to_string();
         }
     }
-    let tampered_content = serde_cbor::to_vec(&content).unwrap();
+    let tampered_content = cbor_to_vec(&content).unwrap();
     
     // Read all other files first
     let mut files_to_copy = std::collections::HashMap::new();
@@ -136,9 +147,9 @@ fn test_tamper_manifest_modification() {
     let mut manifest_bytes = Vec::new();
     zip.by_name("manifest.cbor").unwrap().read_to_end(&mut manifest_bytes).unwrap();
     
-    let mut manifest: tdf_core::document::Manifest = serde_cbor::from_slice(&manifest_bytes).unwrap();
+    let mut manifest: tdf_core::document::Manifest = cbor_from_slice(&manifest_bytes).unwrap();
     manifest.document.title = "TAMPERED TITLE - Should be detected!".to_string();
-    let tampered_manifest = serde_cbor::to_vec(&manifest).unwrap();
+    let tampered_manifest = cbor_to_vec(&manifest).unwrap();
     
     // Rebuild ZIP with tampered manifest
     // First, read all files we need to copy
@@ -371,7 +382,7 @@ fn test_signature_replacement_attack() {
     let fake_sig_block = tdf_core::signature::SignatureBlock {
         signatures: vec![fake_signature],
     };
-    let fake_sig_bytes = serde_cbor::to_vec(&fake_sig_block).unwrap();
+    let fake_sig_bytes = cbor_to_vec(&fake_sig_block).unwrap();
     
     // Replace signatures.cbor in ZIP
     let file = fs::File::open(&path).unwrap();
@@ -597,10 +608,10 @@ fn test_root_hash_substitution_attack() {
     let mut manifest_bytes = Vec::new();
     zip.by_name("manifest.cbor").unwrap().read_to_end(&mut manifest_bytes).unwrap();
     
-    let mut manifest: tdf_core::document::Manifest = serde_cbor::from_slice(&manifest_bytes).unwrap();
+    let mut manifest: tdf_core::document::Manifest = cbor_from_slice(&manifest_bytes).unwrap();
     // Replace with fake hash
     manifest.integrity.root_hash = "a".repeat(64); // Fake SHA256 hex hash
-    let tampered_manifest = serde_cbor::to_vec(&manifest).unwrap();
+    let tampered_manifest = cbor_to_vec(&manifest).unwrap();
     
     // Rebuild ZIP
     // First, read all files we need to copy

@@ -30,7 +30,7 @@ export class Modal {
         this.options = {
             title: options.title,
             content: options.content,
-            footer: options.footer,
+            footer: options.footer || undefined as any, // Will be checked before use
             closeOnBackdropClick: options.closeOnBackdropClick !== false,
             closeOnEscape: options.closeOnEscape !== false,
             showCloseButton: options.showCloseButton !== false,
@@ -42,10 +42,9 @@ export class Modal {
 
         this.container = this.create();
         this.backdrop = this.createBackdrop();
-        this.dialog = this.createDialog();
+        this.dialog = null as any; // Will be set in show()
         
         this.container.appendChild(this.backdrop);
-        this.container.appendChild(this.dialog);
     }
 
     private create(): HTMLElement {
@@ -144,6 +143,12 @@ export class Modal {
     }
 
     async show(): Promise<void> {
+        // Create dialog if not already created
+        if (!this.dialog) {
+            this.dialog = await this.createDialog();
+            this.container.appendChild(this.dialog);
+        }
+
         // Store previous active element for restoration
         this.previousActiveElement = document.activeElement as HTMLElement;
 

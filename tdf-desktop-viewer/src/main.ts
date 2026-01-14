@@ -74,8 +74,7 @@ function initKeyboardShortcuts() {
         handler: () => {
             // Close any open modals or return to upload view
             const documentView = document.getElementById('documentView');
-            const uploadArea = document.getElementById('uploadArea');
-            if (documentView && documentView.style.display !== 'none') {
+            if (documentView && (documentView as HTMLElement).style.display !== 'none') {
                 // Could add confirmation dialog here
             }
         },
@@ -669,7 +668,7 @@ async function showVerificationDetails(doc: any) {
     if (toggleBtn && detailsSection) {
         toggleBtn.addEventListener('click', async () => {
             const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
-            detailsSection.style.display = isExpanded ? 'none' : 'block';
+            (detailsSection as HTMLElement).style.display = isExpanded ? 'none' : 'block';
             toggleBtn.setAttribute('aria-expanded', String(!isExpanded));
             const textSpan = toggleBtn.querySelector('.toggle-text');
             if (textSpan) {
@@ -698,7 +697,7 @@ async function showVerificationDetails(doc: any) {
             const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
             
             if (sectionContent) {
-                sectionContent.style.display = isExpanded ? 'none' : 'block';
+                (sectionContent as HTMLElement).style.display = isExpanded ? 'none' : 'block';
                 toggle.setAttribute('aria-expanded', String(!isExpanded));
                 
                 // Update icon
@@ -761,7 +760,7 @@ async function showVerificationDetails(doc: any) {
     // Insert lock icon
     const sealIcon = document.getElementById('sealIcon');
     if (sealIcon) {
-        createInlineIcon('lock-closed', 32, '', 'Cryptographically Sealed').then(icon => {
+        createInlineIcon('lock-closed', 24, '', 'Cryptographically Sealed').then(icon => {
             sealIcon.appendChild(icon);
         });
     }
@@ -905,8 +904,9 @@ function performDataExtraction() {
         showExtractedData(extractedData);
         
         // Log data extraction
-        const extractedItems = (extractedData.tables?.length || 0) + 
-                              (extractedData.metrics ? Object.keys(extractedData.metrics).length : 0);
+        const tableCount = extractedData.tables ? Object.keys(extractedData.tables).length : 0;
+        const metricCount = extractedData.metrics ? Object.keys(extractedData.metrics).length : 0;
+        const extractedItems = tableCount + metricCount;
         auditLog.logDataExtraction(
             currentDocument.manifest?.document?.title || 'Untitled',
             extractedItems,

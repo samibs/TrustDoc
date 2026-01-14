@@ -71,11 +71,15 @@ export class Header {
         if (name) {
             this.setBreadcrumbs([
                 { label: 'Home', onClick: () => this.navigateToHome() },
-                { label: name }
+                { label: this.documentName || name }
             ]);
         } else {
             this.setBreadcrumbs([]);
         }
+    }
+    
+    getDocumentName(): string | null {
+        return this.documentName;
     }
 
     navigateToBreadcrumb(index: number): void {

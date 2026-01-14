@@ -80,7 +80,7 @@ export function exportVerificationAsJSON(report: VerificationReport, filename?: 
     URL.revokeObjectURL(url);
 }
 
-export async function exportVerificationAsPDF(report: VerificationReport, filename?: string): Promise<void> {
+export async function exportVerificationAsPDF(report: VerificationReport, _filename?: string): Promise<void> {
     // For PDF generation, we'll create an HTML document and use browser print
     // In a production environment, you might want to use a library like jsPDF or pdfkit
     

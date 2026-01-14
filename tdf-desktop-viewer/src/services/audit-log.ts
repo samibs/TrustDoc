@@ -49,7 +49,7 @@ class AuditLogService {
         this.saveLogs(logs);
 
         // Also log to console in development
-        if (import.meta.env.DEV) {
+        if ((import.meta as any).env?.DEV) {
             console.log('[Audit Log]', entry);
         }
     }

@@ -102,7 +102,7 @@ export async function createInlineIcon(name: IconName, size: IconSize = 20, clas
             svg.setAttribute('aria-hidden', 'true');
         }
         
-        return svg;
+        return svg as unknown as HTMLElement;
     }
     
     return createIconElement(name, size, ariaLabel);

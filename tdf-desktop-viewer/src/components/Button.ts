@@ -27,7 +27,7 @@ export class Button {
         this.options = {
             variant: options.variant || 'primary',
             size: options.size || 'md',
-            icon: options.icon,
+            icon: options.icon || undefined as any, // Will be checked before use
             iconPosition: options.iconPosition || 'left',
             loading: options.loading || false,
             disabled: options.disabled || false,

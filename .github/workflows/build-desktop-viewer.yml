@@ -13,6 +13,11 @@ on:
       - 'tdf-desktop-viewer/**'
       - 'tdf-core/**'
   workflow_dispatch:
+    inputs:
+      build_all:
+        description: 'Build packages for all platforms'
+        required: false
+        default: 'true'
   release:
     types: [ created ]
 

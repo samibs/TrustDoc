@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TDF Desktop Viewer</title>
+    <link rel="stylesheet" href="src/styles/brand.css">
     <link rel="stylesheet" href="src/styles/design-system.css">
+    <link rel="stylesheet" href="src/styles/header.css">
     <link rel="stylesheet" href="src/styles/components.css">
     <link rel="stylesheet" href="src/styles/modal.css">
     <link rel="stylesheet" href="src/styles/table.css">
@@ -17,9 +19,12 @@
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <div id="errorBanner" class="error-banner-container"></div>
     <div class="container">
-        <header>
-            <h1>TDF Desktop Viewer</h1>
-            <p>TrustDoc Financial Document Viewer</p>
+        <header class="tdf-header">
+            <div class="tdf-logo">
+                <img src="icons/logo.svg" alt="TDF Logo" class="tdf-logo-icon" style="width: 2rem; height: 2rem;">
+                <h1 class="tdf-logo-text">TDF Desktop Viewer</h1>
+            </div>
+            <p class="tdf-tagline">TrustDoc Financial Document Viewer</p>
         </header>
 
         <main id="main-content">

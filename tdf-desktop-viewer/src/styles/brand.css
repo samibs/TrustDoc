@@ -1,0 +1,130 @@
+/* TDF Brand Colors and Design System */
+
+:root {
+  /* Primary Brand Colors */
+  --tdf-primary: #1e40af;        /* Deep Blue - Trust, Security */
+  --tdf-primary-light: #3b82f6;  /* Lighter Blue */
+  --tdf-primary-dark: #1e3a8a;    /* Darker Blue */
+  
+  /* Secondary Colors */
+  --tdf-secondary: #059669;       /* Green - Success, Verification */
+  --tdf-secondary-light: #10b981;
+  --tdf-secondary-dark: #047857;
+  
+  /* Accent Colors */
+  --tdf-accent: #7c3aed;          /* Purple - Innovation */
+  --tdf-accent-light: #8b5cf6;
+  --tdf-accent-dark: #6d28d9;
+  
+  /* Neutral Colors */
+  --tdf-gray-50: #f9fafb;
+  --tdf-gray-100: #f3f4f6;
+  --tdf-gray-200: #e5e7eb;
+  --tdf-gray-300: #d1d5db;
+  --tdf-gray-400: #9ca3af;
+  --tdf-gray-500: #6b7280;
+  --tdf-gray-600: #4b5563;
+  --tdf-gray-700: #374151;
+  --tdf-gray-800: #1f2937;
+  --tdf-gray-900: #111827;
+  
+  /* Semantic Colors */
+  --tdf-success: #10b981;
+  --tdf-warning: #f59e0b;
+  --tdf-error: #ef4444;
+  --tdf-info: #3b82f6;
+  
+  /* Background Colors */
+  --tdf-bg-primary: #ffffff;
+  --tdf-bg-secondary: #f9fafb;
+  --tdf-bg-tertiary: #f3f4f6;
+  --tdf-bg-dark: #1f2937;
+  
+  /* Text Colors */
+  --tdf-text-primary: #111827;
+  --tdf-text-secondary: #4b5563;
+  --tdf-text-tertiary: #6b7280;
+  --tdf-text-inverse: #ffffff;
+  
+  /* Border Colors */
+  --tdf-border-light: #e5e7eb;
+  --tdf-border-medium: #d1d5db;
+  --tdf-border-dark: #9ca3af;
+  
+  /* Shadow */
+  --tdf-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --tdf-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --tdf-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --tdf-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  
+  /* Spacing */
+  --tdf-spacing-xs: 0.25rem;
+  --tdf-spacing-sm: 0.5rem;
+  --tdf-spacing-md: 1rem;
+  --tdf-spacing-lg: 1.5rem;
+  --tdf-spacing-xl: 2rem;
+  --tdf-spacing-2xl: 3rem;
+  
+  /* Typography */
+  --tdf-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --tdf-font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Fira Mono', 'Droid Sans Mono', 'Source Code Pro', monospace;
+  
+  /* Border Radius */
+  --tdf-radius-sm: 0.25rem;
+  --tdf-radius-md: 0.5rem;
+  --tdf-radius-lg: 0.75rem;
+  --tdf-radius-xl: 1rem;
+  --tdf-radius-full: 9999px;
+  
+  /* Transitions */
+  --tdf-transition-fast: 150ms ease-in-out;
+  --tdf-transition-base: 250ms ease-in-out;
+  --tdf-transition-slow: 350ms ease-in-out;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tdf-bg-primary: #111827;
+    --tdf-bg-secondary: #1f2937;
+    --tdf-bg-tertiary: #374151;
+    --tdf-text-primary: #f9fafb;
+    --tdf-text-secondary: #d1d5db;
+    --tdf-text-tertiary: #9ca3af;
+    --tdf-border-light: #374151;
+    --tdf-border-medium: #4b5563;
+    --tdf-border-dark: #6b7280;
+  }
+}
+
+/* Brand Logo Styles */
+.tdf-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: var(--tdf-primary);
+}
+
+.tdf-logo-icon {
+  width: 2rem;
+  height: 2rem;
+  fill: currentColor;
+}
+
+.tdf-logo-text {
+  font-size: 1.25rem;
+  letter-spacing: -0.025em;
+}
+
+/* Brand Gradient */
+.tdf-gradient {
+  background: linear-gradient(135deg, var(--tdf-primary) 0%, var(--tdf-accent) 100%);
+}
+
+.tdf-gradient-text {
+  background: linear-gradient(135deg, var(--tdf-primary) 0%, var(--tdf-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

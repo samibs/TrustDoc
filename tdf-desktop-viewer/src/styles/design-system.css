@@ -25,9 +25,10 @@
     --color-info-dark: #138496;         /* Info hover/active */
     
     /* Action Colors - Semantic Meaning Only */
-    --color-primary: #0066cc;           /* Primary action */
-    --color-primary-light: #3385d6;     /* Primary hover */
-    --color-primary-dark: #0052a3;      /* Primary active */
+    /* TDF Brand Colors - Integrated */
+    --color-primary: var(--tdf-primary, #1e40af);           /* Primary action - TDF Blue */
+    --color-primary-light: var(--tdf-primary-light, #3b82f6);     /* Primary hover */
+    --color-primary-dark: var(--tdf-primary-dark, #1e3a8a);      /* Primary active */
     --color-primary-bg: #e3f2fd;        /* Primary background */
     
     --color-secondary: #6c757d;         /* Secondary action */

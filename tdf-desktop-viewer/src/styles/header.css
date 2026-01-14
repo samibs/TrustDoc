@@ -1,0 +1,54 @@
+/* TDF Header with Branding */
+
+.tdf-header {
+    background: linear-gradient(135deg, var(--tdf-primary) 0%, var(--tdf-accent) 100%);
+    color: var(--tdf-text-inverse);
+    padding: var(--tdf-spacing-lg) var(--tdf-spacing-xl);
+    border-radius: 0 0 var(--tdf-radius-lg) var(--tdf-radius-lg);
+    box-shadow: var(--tdf-shadow-md);
+    margin-bottom: var(--tdf-spacing-xl);
+}
+
+.tdf-header .tdf-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--tdf-spacing-md);
+    margin-bottom: var(--tdf-spacing-sm);
+}
+
+.tdf-header .tdf-logo-icon {
+    width: 3rem;
+    height: 3rem;
+    filter: brightness(0) invert(1); /* Make logo white for dark background */
+}
+
+.tdf-header .tdf-logo-text {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin: 0;
+    color: var(--tdf-text-inverse);
+}
+
+.tdf-header .tdf-tagline {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    margin: 0;
+    font-weight: 400;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tdf-header {
+        padding: var(--tdf-spacing-md);
+    }
+    
+    .tdf-header .tdf-logo-text {
+        font-size: 1.5rem;
+    }
+    
+    .tdf-header .tdf-logo-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}

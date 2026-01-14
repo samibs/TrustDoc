@@ -28,23 +28,48 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": [
+      "msi",
+      "dmg",
+      "appimage"
+    ],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
-      "icons/128x128@2x.png"
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
     ],
     "windows": {
       "certificateThumbprint": null,
       "digestAlgorithm": "sha256",
-      "timestampUrl": ""
+      "timestampUrl": "",
+      "webviewInstallMode": {
+        "type": "embedBootstrapper"
+      }
+    },
+    "macOS": {
+      "frameworks": [],
+      "minimumSystemVersion": "10.13",
+      "exceptionDomain": "",
+      "signingIdentity": null,
+      "providerShortName": null,
+      "entitlements": null
+    },
+    "linux": {
+      "deb": {
+        "depends": []
+      },
+      "appimage": {
+        "bundleMediaFramework": false
+      }
     },
     "resources": [],
     "externalBin": [],
-    "copyright": "",
+    "copyright": "Copyright © 2024 TrustDoc Contributors",
     "category": "Utility",
     "shortDescription": "Viewer for TDF documents",
-    "longDescription": "Desktop application for viewing and verifying TrustDoc Financial (TDF) documents"
+    "longDescription": "Desktop application for viewing and verifying TrustDoc Financial (TDF) documents with cryptographic integrity verification, key management, and structured data extraction."
   },
   "plugins": {
     "dialog": {

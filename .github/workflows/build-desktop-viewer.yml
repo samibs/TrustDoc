@@ -1,0 +1,221 @@
+name: Build Desktop Viewer
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'tdf-desktop-viewer/**'
+      - 'tdf-core/**'
+      - '.github/workflows/build-desktop-viewer.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'tdf-desktop-viewer/**'
+      - 'tdf-core/**'
+  workflow_dispatch:
+  release:
+    types: [ created ]
+
+jobs:
+  build-windows:
+    name: Build Windows MSI
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+      
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: tdf-desktop-viewer/package-lock.json
+      
+      - name: Install frontend dependencies
+        working-directory: tdf-desktop-viewer
+        run: npm ci
+      
+      - name: Build frontend
+        working-directory: tdf-desktop-viewer
+        run: npm run build
+      
+      - name: Build Tauri app
+        working-directory: tdf-desktop-viewer
+        run: npm run tauri build
+        env:
+          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+      
+      - name: Upload Windows MSI
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-msi
+          path: tdf-desktop-viewer/src-tauri/target/release/bundle/msi/*.msi
+          retention-days: 30
+
+  build-macos:
+    name: Build macOS DMG
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+      
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: tdf-desktop-viewer/package-lock.json
+      
+      - name: Install frontend dependencies
+        working-directory: tdf-desktop-viewer
+        run: npm ci
+      
+      - name: Build frontend
+        working-directory: tdf-desktop-viewer
+        run: npm run build
+      
+      - name: Build Tauri app (Intel)
+        working-directory: tdf-desktop-viewer
+        run: npm run tauri build -- --target x86_64-apple-darwin
+        env:
+          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+      
+      - name: Build Tauri app (Apple Silicon)
+        working-directory: tdf-desktop-viewer
+        run: npm run tauri build -- --target aarch64-apple-darwin
+        env:
+          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+      
+      - name: Upload macOS DMG (Intel)
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-dmg-intel
+          path: tdf-desktop-viewer/src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/*.dmg
+          retention-days: 30
+      
+      - name: Upload macOS DMG (Apple Silicon)
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-dmg-arm
+          path: tdf-desktop-viewer/src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg
+          retention-days: 30
+
+  build-linux:
+    name: Build Linux AppImage & DEB
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.0-dev \
+            build-essential \
+            curl \
+            wget \
+            libssl-dev \
+            libgtk-3-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
+      
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+      
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: tdf-desktop-viewer/package-lock.json
+      
+      - name: Install frontend dependencies
+        working-directory: tdf-desktop-viewer
+        run: npm ci
+      
+      - name: Build frontend
+        working-directory: tdf-desktop-viewer
+        run: npm run build
+      
+      - name: Build Tauri app
+        working-directory: tdf-desktop-viewer
+        run: npm run tauri build
+      
+      - name: Upload Linux AppImage
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-appimage
+          path: tdf-desktop-viewer/src-tauri/target/release/bundle/appimage/*.AppImage
+          retention-days: 30
+      
+      - name: Upload Linux DEB
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-deb
+          path: tdf-desktop-viewer/src-tauri/target/release/bundle/deb/*.deb
+          retention-days: 30
+
+  create-release:
+    name: Create Release
+    needs: [build-windows, build-macos, build-linux]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download Windows MSI
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-msi
+          path: release/windows
+      
+      - name: Download macOS DMG (Intel)
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-dmg-intel
+          path: release/macos-intel
+      
+      - name: Download macOS DMG (Apple Silicon)
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-dmg-arm
+          path: release/macos-arm
+      
+      - name: Download Linux AppImage
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-appimage
+          path: release/linux
+      
+      - name: Download Linux DEB
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-deb
+          path: release/linux
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            release/windows/*.msi
+            release/macos-intel/*.dmg
+            release/macos-arm/*.dmg
+            release/linux/*.AppImage
+            release/linux/*.deb
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

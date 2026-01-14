@@ -115,10 +115,21 @@ Perfect for **financial services**, **legal documents**, **healthcare records**,
 
 #### Desktop Viewer (Recommended)
 
-Download the desktop viewer for your platform:
-- **Windows**: Download `.msi` installer
-- **macOS**: Download `.dmg` file
-- **Linux**: Download `.AppImage`
+**Download packages from [GitHub Releases](https://github.com/samibs/TrustDoc/releases)** (when available)
+
+Or build from source:
+```bash
+cd tdf-desktop-viewer
+npm install
+npm run tauri build
+```
+
+Packages will be in `src-tauri/target/release/bundle/`:
+- **Windows**: `.msi` installer
+- **macOS**: `.dmg` file (Intel & Apple Silicon)
+- **Linux**: `.AppImage` and `.deb` packages
+
+See [BUILD.md](tdf-desktop-viewer/BUILD.md) for detailed build instructions.
 
 #### CLI Tool
 

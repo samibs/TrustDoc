@@ -38,6 +38,7 @@ dist/
 build/
 out/
 *.tsbuildinfo
+dist-packages/
 
 # TypeScript
 *.js.map
